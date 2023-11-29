@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.MyApp.MySplash" parent="Theme.SplashScreen">
         <item name="fontFamily">@font/caveat</item>
         <item name="windowSplashScreenBackground">@drawable/gradient</item>
