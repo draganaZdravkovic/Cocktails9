@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.MyApp.MySplash" parent="Theme.SplashScreen">
-        <item name="fontFamily">@font/caveat</item>
         <item name="windowSplashScreenBackground">@drawable/gradient</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
-        <item name="postSplashScreenTheme">@style/Theme.MaterialComponents.NoActionBar</item>
+        <item name="postSplashScreenTheme">@style/Theme.Cocktails9</item>
     </style>
 </resources>
