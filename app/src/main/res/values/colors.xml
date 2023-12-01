@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="secondary">#EA9922</color>
+    <color name="cream">#FBF1BD</color>
     <color name="bottom_nav_item">#80FFFFFF</color>
     <color name="bottom_nav_selected_item">#FFFFFF</color>
 </resources>
