@@ -21,14 +21,11 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private var _binding: FragmentCocktailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var cocktailsList: MutableList<Cocktails>
-    private lateinit var cocktailsAdapter: CocktailsAdapter
 
     private lateinit var cocktailsViewModel: CocktailsViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         val apiInterface = ApiUtilities.getInstance().create(ApiInterface::class.java)
         val cocktailsRepo = CocktailsRepository(apiInterface)

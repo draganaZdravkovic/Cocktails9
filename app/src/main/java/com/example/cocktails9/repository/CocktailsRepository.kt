@@ -9,5 +9,4 @@ class CocktailsRepository(private val apiInterface: ApiInterface) {
     suspend fun getResult(): Response<Result> {
         return apiInterface.getCocktails()
     }
-
 }

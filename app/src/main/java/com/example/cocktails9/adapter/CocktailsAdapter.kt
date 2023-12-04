@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.cocktails9.model.Cocktails
 import com.example.cocktails9.databinding.RecyclerViewItemBinding
+import com.example.cocktails9.model.Cocktails
 
 class CocktailsAdapter(private var cocktailsList: List<Cocktails>) :
     RecyclerView.Adapter<CocktailsAdapter.CocktailsViewHolder>() {
@@ -14,10 +14,8 @@ class CocktailsAdapter(private var cocktailsList: List<Cocktails>) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bindItem(cocktails: Cocktails) {
-//            cocktails.image?.let { itemBinding.imCocktail.setImageResource(it.toInt()) }
             itemBinding.tvCocktailName.text = cocktails.name
             Glide.with(itemView).load(cocktails.image).into(itemBinding.imCocktail)
-
         }
     }
 
@@ -34,7 +32,6 @@ class CocktailsAdapter(private var cocktailsList: List<Cocktails>) :
     override fun onBindViewHolder(holder: CocktailsViewHolder, position: Int) {
         val cocktails = cocktailsList[position]
         holder.bindItem(cocktails)
-
     }
 
     override fun getItemCount(): Int {
