@@ -1,5 +1,6 @@
 package com.example.cocktails9.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.example.cocktails9.api.ApiInterface
 import com.example.cocktails9.api.ApiUtilities
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
 import com.example.cocktails9.model.Cocktails
+import com.example.cocktails9.model.Resource
 import com.example.cocktails9.repository.CocktailsRepository
 import com.example.cocktails9.viewmodel.CocktailsViewModel
 import com.example.cocktails9.viewmodel.CocktailsViewModelFactory
@@ -21,6 +23,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private var _binding: FragmentCocktailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var cocktailsList: MutableList<Cocktails>
+    private lateinit var adapter: CocktailsAdapter
 
     private lateinit var cocktailsViewModel: CocktailsViewModel
 
@@ -49,6 +52,32 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        initObservers()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
+        adapter = CocktailsAdapter()
+        binding.rvCocktails.adapter = adapter
+    }
+
+    private fun initObservers() {
+        cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    cocktailsList =
+                        (resource.data.body()?.list ?: emptyList()) as MutableList<Cocktails>
+                    adapter.submitList(cocktailsList)
+                }
+                is Resource.Loading -> {
+                    showLoading(resource.isLoading)
+                }
+                is Resource.Error -> {
+                    showAlertDialog(resource.message)
+                }
+            }
+        }
+        cocktailsViewModel.getCocktails()
     }
 
     override fun onDestroyView() {
@@ -56,48 +85,18 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         _binding = null
     }
 
-    private fun initRecyclerView() {
-        binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
-
-        cocktailsList = addDataToList()
-
-        cocktailsViewModel.getCocktailsList.observe(this) { it ->
-            binding.rvCocktails.adapter = CocktailsAdapter(it.body()?.list!!)
-        }
+    private fun showAlertDialog(message: String) {
+        AlertDialog.Builder(context)
+            .setTitle("Alert message")
+            .setMessage(message)
+            .setPositiveButton("OK") { _, _ -> }
+            .show()
     }
 
-    private fun addDataToList(): MutableList<Cocktails> {
-        cocktailsList = mutableListOf()
-        cocktailsList.add(Cocktails("1", R.drawable.c1.toString(), "110 in the shade", "Al"))
-        cocktailsList.add(
-            Cocktails(
-                "2",
-                R.drawable.c2.toString(),
-                "151 Florida Bushwacker",
-                "NonAl"
-            )
-        )
-
-        cocktailsList.add(Cocktails("1", R.drawable.c1.toString(), "110 in the shade", "Al"))
-        cocktailsList.add(
-            Cocktails(
-                "2",
-                R.drawable.c2.toString(),
-                "151 Florida Bushwacker",
-                "NonAl"
-            )
-        )
-
-        cocktailsList.add(Cocktails("1", R.drawable.c1.toString(), "110 in the shade", "Al"))
-        cocktailsList.add(
-            Cocktails(
-                "2",
-                R.drawable.c2.toString(),
-                "151 Florida Bushwacker",
-                "NonAl"
-            )
-        )
-
-        return cocktailsList
+    private fun showLoading(loading: Boolean) {
+        if (loading)
+            binding.progressBar.visibility = View.VISIBLE
+        else
+            binding.progressBar.visibility = View.GONE
     }
 }
