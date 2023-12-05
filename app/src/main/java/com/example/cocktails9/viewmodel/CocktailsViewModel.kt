@@ -8,6 +8,8 @@ import com.example.cocktails9.model.Cocktails
 import com.example.cocktails9.model.Resource
 import com.example.cocktails9.repository.CocktailsRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CocktailsViewModel() : ViewModel() {
@@ -19,10 +21,21 @@ class CocktailsViewModel() : ViewModel() {
         _getCocktailsList.value = Resource.Error(exception.message.toString())
     }
 
-    fun getCocktails() {
-        viewModelScope.launch(exceptionHandler) {
+    var searchJob: Job? = null
+    val DELAY = 500L
+
+    fun getCocktails(searchQuery: String = "") {
+        searchJob = viewModelScope.launch(exceptionHandler) {
+
+            searchJob?.cancel()
+
             _getCocktailsList.value = Resource.Loading(true)
-            val response = cocktailsRepo.getResult()
+
+            if(searchQuery.isEmpty()){
+                delay(DELAY)
+            }
+
+            val response = cocktailsRepo.getResult(searchQuery)
 
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()

@@ -9,7 +9,7 @@ class CocktailsRepository() {
     private val apiInterface: ApiInterface =
         ApiUtilities.getInstance().create(ApiInterface::class.java)
 
-    suspend fun getResult(): Response<Result> {
-        return apiInterface.getCocktails()
+    suspend fun getResult(searchQuery: String): Response<Result> {
+        return apiInterface.getCocktails(searchQuery)
     }
 }
