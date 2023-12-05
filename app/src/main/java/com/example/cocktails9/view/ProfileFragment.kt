@@ -1,12 +1,12 @@
-package com.example.cocktails9
+package com.example.cocktails9.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.cocktails9.R
 import com.example.cocktails9.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {

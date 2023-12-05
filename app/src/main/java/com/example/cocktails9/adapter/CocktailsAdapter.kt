@@ -1,19 +1,23 @@
-package com.example.cocktails9
+package com.example.cocktails9.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.cocktails9.databinding.RecyclerViewItemBinding
+import com.example.cocktails9.model.Cocktails
 
-class CocktailsAdapter(private var cocktailsList: MutableList<Cocktails>) :
-    RecyclerView.Adapter<CocktailsAdapter.CocktailsViewHolder>() {
+class CocktailsAdapter :
+    ListAdapter<Cocktails, CocktailsAdapter.CocktailsViewHolder>(CocktailsDiffCallback()) {
 
     class CocktailsViewHolder(private val itemBinding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bindItem(cocktails: Cocktails) {
-            itemBinding.imCocktail.setImageResource(cocktails.image)
             itemBinding.tvCocktailName.text = cocktails.name
+            Glide.with(itemView).load(cocktails.image).into(itemBinding.imCocktail)
         }
     }
 
@@ -28,11 +32,18 @@ class CocktailsAdapter(private var cocktailsList: MutableList<Cocktails>) :
     }
 
     override fun onBindViewHolder(holder: CocktailsViewHolder, position: Int) {
-        val cocktails = cocktailsList[position]
+        val cocktails = getItem(position)
         holder.bindItem(cocktails)
     }
 
-    override fun getItemCount(): Int {
-        return cocktailsList.size
+    class CocktailsDiffCallback : DiffUtil.ItemCallback<Cocktails>() {
+        override fun areItemsTheSame(oldItem: Cocktails, newItem: Cocktails): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Cocktails, newItem: Cocktails): Boolean {
+            return oldItem == newItem
+        }
     }
 }
+

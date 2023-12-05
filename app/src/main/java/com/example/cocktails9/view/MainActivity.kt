@@ -1,4 +1,4 @@
-package com.example.cocktails9
+package com.example.cocktails9.view
 
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.cocktails9.R
 import com.example.cocktails9.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

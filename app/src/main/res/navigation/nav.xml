@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/cocktailsFragment"
-        android:name="com.example.cocktails9.CocktailsFragment"
+        android:name="com.example.cocktails9.view.CocktailsFragment"
         android:label="Cocktails"
         tools:layout="@layout/fragment_cocktails" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.cocktails9.FavoritesFragment"
+        android:name="com.example.cocktails9.view.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.cocktails9.ProfileFragment"
+        android:name="com.example.cocktails9.view.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
