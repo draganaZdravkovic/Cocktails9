@@ -10,19 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
 import com.example.cocktails9.adapter.CocktailsAdapter
-import com.example.cocktails9.api.ApiInterface
-import com.example.cocktails9.api.ApiUtilities
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
 import com.example.cocktails9.model.Cocktails
 import com.example.cocktails9.model.Resource
-import com.example.cocktails9.repository.CocktailsRepository
 import com.example.cocktails9.viewmodel.CocktailsViewModel
 import com.example.cocktails9.viewmodel.CocktailsViewModelFactory
 
 class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private var _binding: FragmentCocktailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var cocktailsList: MutableList<Cocktails>
     private lateinit var adapter: CocktailsAdapter
 
     private lateinit var cocktailsViewModel: CocktailsViewModel
@@ -30,11 +26,9 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val apiInterface = ApiUtilities.getInstance().create(ApiInterface::class.java)
-        val cocktailsRepo = CocktailsRepository(apiInterface)
         cocktailsViewModel = ViewModelProvider(
             this,
-            CocktailsViewModelFactory(cocktailsRepo)
+            CocktailsViewModelFactory()
         )[CocktailsViewModel::class.java]
 
     }
@@ -65,9 +59,8 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    cocktailsList =
-                        (resource.data.body()?.list ?: emptyList()) as MutableList<Cocktails>
-                    adapter.submitList(cocktailsList)
+                    showLoading(false)
+                    adapter.submitList(resource.data)
                 }
                 is Resource.Loading -> {
                     showLoading(resource.isLoading)
@@ -86,17 +79,22 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     }
 
     private fun showAlertDialog(message: String) {
+        binding.rvCocktails.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         AlertDialog.Builder(context)
-            .setTitle("Alert message")
+            .setTitle("Cocktails9 Error")
             .setMessage(message)
             .setPositiveButton("OK") { _, _ -> }
             .show()
     }
 
     private fun showLoading(loading: Boolean) {
-        if (loading)
+        if (loading) {
+            binding.rvCocktails.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
-        else
+        } else {
+            binding.rvCocktails.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
+        }
     }
 }
