@@ -1,9 +1,11 @@
 package com.example.cocktails9.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cocktails9.R
 import com.example.cocktails9.model.Cocktails
 import com.example.cocktails9.model.Resource
 import com.example.cocktails9.repository.CocktailsRepository
@@ -12,7 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CocktailsViewModel : ViewModel() {
+class CocktailsViewModel(application: Application) : AndroidViewModel(application) {
     private val _getCocktailsList: MutableLiveData<Resource<List<Cocktails>>> = MutableLiveData()
     val getCocktailsList: LiveData<Resource<List<Cocktails>>> get() = _getCocktailsList
     private val cocktailsRepo: CocktailsRepository = CocktailsRepository()
@@ -23,6 +25,7 @@ class CocktailsViewModel : ViewModel() {
 
     private var searchJob: Job? = null
     private val _delay = 500L
+
 
     fun getCocktails(searchQuery: String = "") {
         searchJob?.cancel()
@@ -36,11 +39,19 @@ class CocktailsViewModel : ViewModel() {
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()
                 if (cocktails.isEmpty())
-                    _getCocktailsList.value = Resource.Empty(cocktails, "No cocktails found.")
+                    _getCocktailsList.value = Resource.Empty(
+                        cocktails, getApplication<Application>().resources.getString(
+                            R.string.no_cocktails_found
+                        )
+                    )
                 else
                     _getCocktailsList.value = Resource.Success(cocktails)
             } else {
-                _getCocktailsList.value = Resource.Error("Error occurred while fetching data!")
+                _getCocktailsList.value = Resource.Error(
+                    getApplication<Application>().resources.getString(
+                        R.string.cocktails_error
+                    )
+                )
             }
             _getCocktailsList.value = Resource.Loading(false)
         }

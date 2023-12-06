@@ -33,7 +33,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         cocktailsViewModel = ViewModelProvider(
             this,
-            CocktailsViewModelFactory()
+            CocktailsViewModelFactory(requireActivity().application)
         )[CocktailsViewModel::class.java]
     }
 
