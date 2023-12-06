@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.MyApp.MySplash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@drawable/gradient</item>
+        <item name="android:windowBackground">@drawable/gradient</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.Cocktails9</item>

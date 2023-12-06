@@ -10,4 +10,8 @@
     <string name="example_levi9_com">example@levi9.com</string>
     <string name="search">Search</string>
     <string name="filter">Filter</string>
+    <string name="type_in_cocktail_s_name">Type in cocktail\'s name</string>
+    <string name="alcoholic">Alcoholic</string>
+    <string name="no_cocktails_found">"No cocktails found."</string>
+    <string name="cocktails_error">"Error occurred while fetching data!"</string>
 </resources>
