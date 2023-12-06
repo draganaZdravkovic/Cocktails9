@@ -26,6 +26,7 @@ class CocktailsViewModel(application: Application) : AndroidViewModel(applicatio
     private var searchJob: Job? = null
     private val _delay = 500L
 
+    private val resources = application.resources
 
     fun getCocktails(searchQuery: String = "") {
         searchJob?.cancel()
@@ -40,7 +41,7 @@ class CocktailsViewModel(application: Application) : AndroidViewModel(applicatio
                 val cocktails = response.body()?.list ?: emptyList()
                 if (cocktails.isEmpty())
                     _getCocktailsList.value = Resource.Empty(
-                        cocktails, getApplication<Application>().resources.getString(
+                        cocktails, resources.getString(
                             R.string.no_cocktails_found
                         )
                     )
@@ -48,7 +49,7 @@ class CocktailsViewModel(application: Application) : AndroidViewModel(applicatio
                     _getCocktailsList.value = Resource.Success(cocktails)
             } else {
                 _getCocktailsList.value = Resource.Error(
-                    getApplication<Application>().resources.getString(
+                    resources.getString(
                         R.string.cocktails_error
                     )
                 )
