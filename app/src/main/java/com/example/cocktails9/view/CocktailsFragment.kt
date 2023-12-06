@@ -86,16 +86,6 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         }
     }
 
-    private fun showSearch() {
-        isSearchVisible = !isSearchVisible
-        if (isSearchVisible) {
-            binding.etSearchCocktail.visibility = View.VISIBLE
-            binding.etSearchCocktail.requestFocus()
-        } else {
-            binding.etSearchCocktail.visibility = View.GONE
-        }
-    }
-
     private fun initRecyclerView() {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = CocktailsAdapter()
@@ -106,7 +96,6 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
             rearrangeItems()
         }
     }
-
     private fun rearrangeItems() {
         cocktailsViewModel.getCocktails(query)
     }
@@ -124,9 +113,24 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
                 is Resource.Error -> {
                     showAlertDialog(resource.message)
                 }
+                is Resource.Empty -> {
+                    binding.tvEmpty.visibility = View.VISIBLE
+                    binding.tvEmpty.text = resource.message
+                    adapter.submitList(resource.data)
+                }
             }
         }
         cocktailsViewModel.getCocktails()
+    }
+
+    private fun showSearch() {
+        isSearchVisible = !isSearchVisible
+        if (isSearchVisible) {
+            binding.etSearchCocktail.visibility = View.VISIBLE
+            binding.etSearchCocktail.requestFocus()
+        } else {
+            binding.etSearchCocktail.visibility = View.GONE
+        }
     }
 
     private fun showAlertDialog(message: String) {
@@ -143,6 +147,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         if (loading) {
             binding.rvCocktails.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.GONE
         } else {
             binding.rvCocktails.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
