@@ -11,4 +11,8 @@ data class Cocktails(
     val name: String?,
     @SerializedName("strAlcoholic")
     val alcoholicFlag: String?
-)
+) : FavoritesItem() {
+    override fun getType(): Int {
+        return Type.COCKTAIL.ordinal
+    }
+}

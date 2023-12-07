@@ -7,35 +7,26 @@ import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
 import com.example.cocktails9.adapter.CocktailsAdapter
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
 import com.example.cocktails9.model.Resource
 import com.example.cocktails9.viewmodel.CocktailsViewModel
-import com.example.cocktails9.viewmodel.CocktailsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private var _binding: FragmentCocktailsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: CocktailsAdapter
-    private lateinit var cocktailsViewModel: CocktailsViewModel
+    private val cocktailsViewModel by viewModels<CocktailsViewModel>()
 
     private var isSearchVisible = false
     private var query = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        cocktailsViewModel = ViewModelProvider(
-            this,
-            CocktailsViewModelFactory(requireActivity().application)
-        )[CocktailsViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,6 +87,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
             rearrangeItems()
         }
     }
+
     private fun rearrangeItems() {
         cocktailsViewModel.getCocktails(query)
     }
