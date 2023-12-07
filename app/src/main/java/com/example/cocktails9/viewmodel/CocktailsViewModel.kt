@@ -31,27 +31,23 @@ class CocktailsViewModel @Inject constructor(
     }
 
     private var searchJob: Job? = null
-    private val _delay = 500L
+
+    companion object {
+        private const val DELAY = 500L
+    }
 
     fun getCocktails(searchQuery: String = "") {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(exceptionHandler) {
             _getCocktailsList.value = Resource.Loading(true)
 
-            if (searchQuery.isEmpty()) delay(_delay)
+            if (searchQuery.isEmpty()) delay(DELAY)
 
-            val response = cocktailsRepo.getResult(searchQuery)
+            val response = cocktailsRepo.getCocktailsResponse(searchQuery)
 
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()
-                if (cocktails.isEmpty())
-                    _getCocktailsList.value = Resource.Empty(
-                        cocktails, resources.getString(
-                            R.string.no_cocktails_found
-                        )
-                    )
-                else
-                    _getCocktailsList.value = Resource.Success(cocktails)
+                _getCocktailsList.value = Resource.Success(cocktails)
             } else {
                 _getCocktailsList.value = Resource.Error(
                     resources.getString(

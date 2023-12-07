@@ -59,7 +59,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.miSearch -> {
-                        showSearch()
+                        showHideSearch()
                         return true
                     }
                     R.id.miFilter -> {
@@ -84,11 +84,11 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
-            rearrangeItems()
+            refreshCocktails()
         }
     }
 
-    private fun rearrangeItems() {
+    private fun refreshCocktails() {
         cocktailsViewModel.getCocktails(query)
     }
 
@@ -96,26 +96,26 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    showLoading(false)
+                    if (resource.data.isEmpty())
+                        showNotFound()
+                    else
+                        showLoading(false)
+
                     adapter.submitList(resource.data)
                 }
-                is Resource.Loading -> {
-                    showLoading(resource.isLoading)
-                }
-                is Resource.Error -> {
-                    showAlertDialog(resource.message)
-                }
-                is Resource.Empty -> {
-                    binding.tvEmpty.visibility = View.VISIBLE
-                    binding.tvEmpty.text = resource.message
-                    adapter.submitList(resource.data)
-                }
+                is Resource.Loading -> showLoading(resource.isLoading)
+                is Resource.Error -> showErrorDialog(resource.message)
             }
         }
         cocktailsViewModel.getCocktails()
     }
 
-    private fun showSearch() {
+    private fun showNotFound() {
+        binding.tvEmpty.visibility = View.VISIBLE
+        binding.tvEmpty.text = resources.getString(R.string.no_cocktails_found)
+    }
+
+    private fun showHideSearch() {
         isSearchVisible = !isSearchVisible
         if (isSearchVisible) {
             binding.etSearchCocktail.visibility = View.VISIBLE
@@ -125,13 +125,13 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         }
     }
 
-    private fun showAlertDialog(message: String) {
+    private fun showErrorDialog(message: String) {
         binding.rvCocktails.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         AlertDialog.Builder(context)
-            .setTitle("Cocktails9 Error")
+            .setTitle(resources.getString(R.string.cocktails_error))
             .setMessage(message)
-            .setPositiveButton("OK") { _, _ -> }
+            .setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
             .show()
     }
 

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.cocktails9.model.Category
 import com.example.cocktails9.model.Cocktails
 import com.example.cocktails9.model.FavoritesItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 class FavoritesViewModel() : ViewModel() {
     private val _getFavoritesList: MutableLiveData<List<FavoritesItem>> = MutableLiveData()

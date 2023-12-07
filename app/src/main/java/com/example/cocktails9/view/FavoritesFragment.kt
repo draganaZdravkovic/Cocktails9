@@ -44,11 +44,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
-            rearrangeItems()
+            refreshCocktails()
         }
     }
 
-    private fun rearrangeItems() {
+    private fun refreshCocktails() {
         favoritesViewModel.getFavorites()
     }
 

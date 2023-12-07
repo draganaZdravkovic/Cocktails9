@@ -92,10 +92,13 @@ class FavoritesAdapter :
         }
     }
 
-    // TODO(implement comparing logic for different subclasses)
     class CocktailsDiffCallback : DiffUtil.ItemCallback<FavoritesItem>() {
         override fun areItemsTheSame(oldItem: FavoritesItem, newItem: FavoritesItem): Boolean {
-            return oldItem == newItem
+            return oldItem.getType() == newItem.getType() &&
+                    when (oldItem) {
+                        is Cocktails -> oldItem.id == (newItem as? Cocktails)?.id
+                        is Category -> oldItem.category == (newItem as? Category)?.category
+                    }
         }
 
         override fun areContentsTheSame(oldItem: FavoritesItem, newItem: FavoritesItem): Boolean {
