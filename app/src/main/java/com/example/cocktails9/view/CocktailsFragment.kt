@@ -7,35 +7,26 @@ import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
 import com.example.cocktails9.adapter.CocktailsAdapter
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
 import com.example.cocktails9.model.Resource
 import com.example.cocktails9.viewmodel.CocktailsViewModel
-import com.example.cocktails9.viewmodel.CocktailsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private var _binding: FragmentCocktailsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: CocktailsAdapter
-    private lateinit var cocktailsViewModel: CocktailsViewModel
+    private val cocktailsViewModel by viewModels<CocktailsViewModel>()
 
     private var isSearchVisible = false
     private var query = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        cocktailsViewModel = ViewModelProvider(
-            this,
-            CocktailsViewModelFactory(requireActivity().application)
-        )[CocktailsViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +59,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.miSearch -> {
-                        showSearch()
+                        showHideSearch()
                         return true
                     }
                     R.id.miFilter -> {
@@ -93,10 +84,11 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
-            rearrangeItems()
+            refreshCocktails()
         }
     }
-    private fun rearrangeItems() {
+
+    private fun refreshCocktails() {
         cocktailsViewModel.getCocktails(query)
     }
 
@@ -104,26 +96,26 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    showLoading(false)
+                    if (resource.data.isEmpty())
+                        showNotFound()
+                    else
+                        showLoading(false)
+
                     adapter.submitList(resource.data)
                 }
-                is Resource.Loading -> {
-                    showLoading(resource.isLoading)
-                }
-                is Resource.Error -> {
-                    showAlertDialog(resource.message)
-                }
-                is Resource.Empty -> {
-                    binding.tvEmpty.visibility = View.VISIBLE
-                    binding.tvEmpty.text = resource.message
-                    adapter.submitList(resource.data)
-                }
+                is Resource.Loading -> showLoading(resource.isLoading)
+                is Resource.Error -> showErrorDialog(resource.message)
             }
         }
         cocktailsViewModel.getCocktails()
     }
 
-    private fun showSearch() {
+    private fun showNotFound() {
+        binding.tvEmpty.visibility = View.VISIBLE
+        binding.tvEmpty.text = resources.getString(R.string.no_cocktails_found)
+    }
+
+    private fun showHideSearch() {
         isSearchVisible = !isSearchVisible
         if (isSearchVisible) {
             binding.etSearchCocktail.visibility = View.VISIBLE
@@ -133,13 +125,13 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         }
     }
 
-    private fun showAlertDialog(message: String) {
+    private fun showErrorDialog(message: String) {
         binding.rvCocktails.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         AlertDialog.Builder(context)
-            .setTitle("Cocktails9 Error")
+            .setTitle(resources.getString(R.string.cocktails_error))
             .setMessage(message)
-            .setPositiveButton("OK") { _, _ -> }
+            .setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
             .show()
     }
 
