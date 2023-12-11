@@ -16,7 +16,7 @@ class CocktailsViewHolder(
 
     init {
         itemBinding.ivFavorite.setOnClickListener {
-            val position = bindingAdapterPosition
+            val position = absoluteAdapterPosition
             val toAdd: Boolean
             if (position != RecyclerView.NO_POSITION) {
                 val cocktail = list[position]
