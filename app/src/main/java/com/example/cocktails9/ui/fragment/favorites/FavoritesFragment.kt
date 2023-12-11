@@ -35,30 +35,20 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
         initRecyclerView()
         initObservers()
-        favoritesViewModel.getFavorites()
     }
 
     private fun initRecyclerView() {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = FavoritesAdapter()
         binding.rvCocktails.adapter = adapter
-
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.swipeRefreshLayout.isRefreshing = false
-            refreshCocktails()
-        }
     }
 
-    private fun refreshCocktails() {
-        favoritesViewModel.getFavorites()
-    }
 
     private fun initObservers() {
 
-        favoritesViewModel.getFavoritesList.observe(viewLifecycleOwner) {
+        favoritesViewModel.favoritesListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
-        favoritesViewModel.getFavorites()
     }
 
     override fun onDestroyView() {

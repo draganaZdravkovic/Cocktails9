@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.cocktails9.data.model.Cocktails
 import com.example.cocktails9.databinding.RecyclerViewItemBinding
 import com.example.cocktails9.ui.fragment.cocktails.recyclerview.viewholder.CocktailsViewHolder
-import com.example.cocktails9.ui.fragment.favorites.viewmodel.FavoritesViewModel
 
-class CocktailsAdapter(private val favoritesViewModel: FavoritesViewModel) :
+class CocktailsAdapter(private val listener: FavoriteClickListener) :
     ListAdapter<Cocktails, CocktailsViewHolder>(CocktailsDiffCallback()) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailsViewHolder {
         return CocktailsViewHolder(
@@ -19,7 +19,7 @@ class CocktailsAdapter(private val favoritesViewModel: FavoritesViewModel) :
                 parent,
                 false
             ),
-            favoritesViewModel
+            listener, currentList
         )
     }
 
@@ -37,6 +37,10 @@ class CocktailsAdapter(private val favoritesViewModel: FavoritesViewModel) :
         override fun areContentsTheSame(oldItem: Cocktails, newItem: Cocktails): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface FavoriteClickListener {
+        fun onFavoriteClick(cocktail: Cocktails, toAdd: Boolean)
     }
 }
 

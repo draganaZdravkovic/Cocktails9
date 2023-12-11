@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
+import com.example.cocktails9.data.model.Cocktails
 import com.example.cocktails9.data.model.Resource
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
 import com.example.cocktails9.ui.fragment.cocktails.recyclerview.adapter.CocktailsAdapter
@@ -19,7 +20,8 @@ import com.example.cocktails9.ui.fragment.favorites.viewmodel.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
+class CocktailsFragment : Fragment(R.layout.fragment_cocktails),
+    CocktailsAdapter.FavoriteClickListener {
     private var _binding: FragmentCocktailsBinding? = null
     private val binding get() = _binding!!
 
@@ -81,7 +83,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private fun initRecyclerView() {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
-        adapter = CocktailsAdapter(favoritesViewModel)
+        adapter = CocktailsAdapter(this)
         binding.rvCocktails.adapter = adapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -146,5 +148,10 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
             binding.rvCocktails.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    override fun onFavoriteClick(cocktail: Cocktails, toAdd: Boolean) {
+        if (toAdd) favoritesViewModel.addFavorite(cocktail)
+        else favoritesViewModel.removeFavorite(cocktail)
     }
 }

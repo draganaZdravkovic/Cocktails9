@@ -1,5 +1,6 @@
 package com.example.cocktails9.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -9,7 +10,10 @@ import com.example.cocktails9.data.model.Cocktails
 @Dao
 interface FavoritesDao {
     @Query("SELECT * FROM favorites")
-    suspend fun getAllFavorites(): List<Cocktails>
+    fun getAllFavorites(): LiveData< List<Cocktails>>
+
+    @Query("SELECT id FROM favorites")
+    suspend fun getAllFavoritesId(): List<String>
 
     @Upsert
     suspend fun insertFavorite(favoriteCocktail: Cocktails)

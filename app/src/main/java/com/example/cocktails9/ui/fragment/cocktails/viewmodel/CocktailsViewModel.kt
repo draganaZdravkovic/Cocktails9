@@ -50,9 +50,9 @@ class CocktailsViewModel @Inject constructor(
 
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()
-                val favorites = favoritesRepo.getFavorites()
-                _getCocktailsList.value =
-                    Resource.Success(updateFavoriteStatusInCocktails(favorites, cocktails))
+                val favoritesId = favoritesRepo.getAllFavoritesId()
+                updateFavoriteStatusInCocktails(favoritesId, cocktails)
+                _getCocktailsList.value = Resource.Success(cocktails)
             } else {
                 _getCocktailsList.value = Resource.Error(
                     resources.getString(
@@ -65,22 +65,11 @@ class CocktailsViewModel @Inject constructor(
     }
 
     private fun updateFavoriteStatusInCocktails(
-        favorites: List<Cocktails>?,
+        favoritesId: List<String>,
         cocktails: List<Cocktails>
-    ): List<Cocktails> {
-        val mergedCocktails: MutableList<Cocktails> = mutableListOf()
-
-        favorites?.forEach { favoriteItem ->
-            val matchingCocktail = cocktails.find { it.id == favoriteItem.id }
-            if (matchingCocktail != null) {
-                mergedCocktails.add(favoriteItem.copy(isFavorite = true))
-            }
+    ) {
+        cocktails.forEach {
+            it.isFavorite = favoritesId.contains(it.id)
         }
-
-        val cocktailsIdsInFavorites = favorites?.map { it.id }
-        val remainingCocktails = cocktails.filter { it.id !in cocktailsIdsInFavorites.orEmpty() }
-        mergedCocktails.addAll(remainingCocktails)
-
-        return mergedCocktails
     }
 }

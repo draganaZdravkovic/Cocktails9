@@ -1,8 +1,7 @@
 package com.example.cocktails9.ui.fragment.favorites.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.cocktails9.data.model.Category
 import com.example.cocktails9.data.model.Cocktails
@@ -11,12 +10,22 @@ import com.example.cocktails9.data.repository.FavoritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.collections.List
+import kotlin.collections.MutableList
+import kotlin.collections.MutableMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.iterator
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(private val repository: FavoritesRepository) :
     ViewModel() {
-    private val _getFavoritesList: MutableLiveData<List<FavoritesItem>> = MutableLiveData()
-    val getFavoritesList: LiveData<List<FavoritesItem>> get() = _getFavoritesList
+    val favoritesListLiveData = repository.getFavorites().map {
+        sortCocktailsToCategories(it)
+    }
 
     fun addFavorite(cocktail: Cocktails) {
         viewModelScope.launch {
@@ -27,14 +36,6 @@ class FavoritesViewModel @Inject constructor(private val repository: FavoritesRe
     fun removeFavorite(cocktail: Cocktails) {
         viewModelScope.launch {
             repository.removeFavorite(cocktail)
-        }
-    }
-
-    fun getFavorites() {
-        viewModelScope.launch {
-            _getFavoritesList.value = sortCocktailsToCategories(
-                repository.getFavorites()
-            )
         }
     }
 
