@@ -1,4 +1,4 @@
-package com.example.cocktails9.view
+package com.example.cocktails9.ui.fragment.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
-import com.example.cocktails9.adapter.FavoritesAdapter
 import com.example.cocktails9.databinding.FragmentFavoritesBinding
-import com.example.cocktails9.viewmodel.FavoritesViewModel
+import com.example.cocktails9.ui.fragment.favorites.recyclerview.adapter.FavoritesAdapter
+import com.example.cocktails9.ui.fragment.favorites.viewmodel.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +35,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
         initRecyclerView()
         initObservers()
+        favoritesViewModel.getFavorites()
     }
 
     private fun initRecyclerView() {
@@ -53,11 +54,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initObservers() {
+
         favoritesViewModel.getFavoritesList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
         favoritesViewModel.getFavorites()
-
     }
 
     override fun onDestroyView() {

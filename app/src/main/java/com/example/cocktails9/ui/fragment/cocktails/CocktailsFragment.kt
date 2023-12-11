@@ -1,4 +1,4 @@
-package com.example.cocktails9.view
+package com.example.cocktails9.ui.fragment.cocktails
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -11,10 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
-import com.example.cocktails9.adapter.CocktailsAdapter
+import com.example.cocktails9.data.model.Resource
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
-import com.example.cocktails9.model.Resource
-import com.example.cocktails9.viewmodel.CocktailsViewModel
+import com.example.cocktails9.ui.fragment.cocktails.recyclerview.adapter.CocktailsAdapter
+import com.example.cocktails9.ui.fragment.cocktails.viewmodel.CocktailsViewModel
+import com.example.cocktails9.ui.fragment.favorites.viewmodel.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private lateinit var adapter: CocktailsAdapter
     private val cocktailsViewModel by viewModels<CocktailsViewModel>()
+    private val favoritesViewModel by viewModels<FavoritesViewModel>()
 
     private var isSearchVisible = false
     private var query = ""
@@ -79,7 +81,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private fun initRecyclerView() {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
-        adapter = CocktailsAdapter()
+        adapter = CocktailsAdapter(favoritesViewModel)
         binding.rvCocktails.adapter = adapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {

@@ -1,4 +1,4 @@
-package com.example.cocktails9.adapter
+package com.example.cocktails9.ui.fragment.favorites.recyclerview.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,38 +6,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.cocktails9.data.model.Category
+import com.example.cocktails9.data.model.Cocktails
+import com.example.cocktails9.data.model.FavoritesItem
 import com.example.cocktails9.databinding.RecyclerViewCategoryItemBinding
 import com.example.cocktails9.databinding.RecyclerViewFavoriteItemBinding
-import com.example.cocktails9.model.Category
-import com.example.cocktails9.model.Cocktails
-import com.example.cocktails9.model.FavoritesItem
+import com.example.cocktails9.ui.fragment.favorites.recyclerview.viewholder.RecyclerViewCategoryItemViewHolder
+import com.example.cocktails9.ui.fragment.favorites.recyclerview.viewholder.RecyclerViewCocktailItemViewHolder
 
 class FavoritesAdapter :
     ListAdapter<FavoritesItem, RecyclerView.ViewHolder>(CocktailsDiffCallback()) {
 
-    class RecyclerItemViewHolder(private val itemBinding: RecyclerViewFavoriteItemBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bindItem(cocktails: Cocktails) {
-            itemBinding.tvCocktailName.text = cocktails.name
-            Glide.with(itemView).load(cocktails.image).into(itemBinding.imCocktail)
-        }
-    }
-
-    class RecyclerViewCategoryItemViewHolder(private val itemBinding: RecyclerViewCategoryItemBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bindItem(category: String) {
-            itemBinding.tvCategory.text = category
-        }
-    }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             FavoritesItem.Type.COCKTAIL.ordinal -> {
-                RecyclerItemViewHolder(
+                RecyclerViewCocktailItemViewHolder(
                     RecyclerViewFavoriteItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
@@ -64,7 +47,7 @@ class FavoritesAdapter :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is RecyclerItemViewHolder -> {
+            is RecyclerViewCocktailItemViewHolder -> {
                 val cocktails = getItem(position) as Cocktails
                 holder.bindItem(cocktails)
             }

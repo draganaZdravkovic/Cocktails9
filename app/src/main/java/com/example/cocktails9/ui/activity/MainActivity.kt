@@ -1,4 +1,4 @@
-package com.example.cocktails9.view
+package com.example.cocktails9.ui.activity
 
 import android.os.Build
 import android.os.Bundle

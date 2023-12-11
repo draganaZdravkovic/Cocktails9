@@ -1,7 +1,7 @@
-package com.example.cocktails9.api
+package com.example.cocktails9.data.remote
 
 import retrofit2.Response
-import com.example.cocktails9.model.CocktailsResponse
+import com.example.cocktails9.data.model.CocktailsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

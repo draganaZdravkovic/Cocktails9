@@ -1,4 +1,4 @@
-package com.example.cocktails9.viewmodel
+package com.example.cocktails9.ui.fragment.cocktails.viewmodel
 
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktails9.R
-import com.example.cocktails9.model.Cocktails
-import com.example.cocktails9.model.Resource
-import com.example.cocktails9.repository.CocktailsRepository
+import com.example.cocktails9.data.model.Cocktails
+import com.example.cocktails9.data.model.Resource
+import com.example.cocktails9.data.repository.CocktailsRepository
+import com.example.cocktails9.data.repository.FavoritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CocktailsViewModel @Inject constructor(
     private val cocktailsRepo: CocktailsRepository,
+    private val favoritesRepo: FavoritesRepository,
     private val resources: Resources
 
 ) : ViewModel() {
@@ -39,6 +41,7 @@ class CocktailsViewModel @Inject constructor(
     fun getCocktails(searchQuery: String = "") {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(exceptionHandler) {
+
             _getCocktailsList.value = Resource.Loading(true)
 
             if (searchQuery.isEmpty()) delay(DELAY)
@@ -47,7 +50,9 @@ class CocktailsViewModel @Inject constructor(
 
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()
-                _getCocktailsList.value = Resource.Success(cocktails)
+                val favorites = favoritesRepo.getFavorites()
+                _getCocktailsList.value =
+                    Resource.Success(updateFavoriteStatusInCocktails(favorites, cocktails))
             } else {
                 _getCocktailsList.value = Resource.Error(
                     resources.getString(
@@ -57,5 +62,25 @@ class CocktailsViewModel @Inject constructor(
             }
             _getCocktailsList.value = Resource.Loading(false)
         }
+    }
+
+    private fun updateFavoriteStatusInCocktails(
+        favorites: List<Cocktails>?,
+        cocktails: List<Cocktails>
+    ): List<Cocktails> {
+        val mergedCocktails: MutableList<Cocktails> = mutableListOf()
+
+        favorites?.forEach { favoriteItem ->
+            val matchingCocktail = cocktails.find { it.id == favoriteItem.id }
+            if (matchingCocktail != null) {
+                mergedCocktails.add(favoriteItem.copy(isFavorite = true))
+            }
+        }
+
+        val cocktailsIdsInFavorites = favorites?.map { it.id }
+        val remainingCocktails = cocktails.filter { it.id !in cocktailsIdsInFavorites.orEmpty() }
+        mergedCocktails.addAll(remainingCocktails)
+
+        return mergedCocktails
     }
 }

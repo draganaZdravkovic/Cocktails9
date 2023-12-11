@@ -1,4 +1,4 @@
-package com.example.cocktails9.model
+package com.example.cocktails9.data.model
 
 data class Category(val category: String) : FavoritesItem() {
     override fun getType(): Int {

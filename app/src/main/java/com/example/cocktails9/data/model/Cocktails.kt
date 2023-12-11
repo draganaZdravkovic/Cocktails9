@@ -1,16 +1,21 @@
-package com.example.cocktails9.model
+package com.example.cocktails9.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "favorites")
 data class Cocktails(
+    @PrimaryKey()
     @SerializedName("idDrink")
-    val id: String?,
+    val id: String,
     @SerializedName("strDrinkThumb")
     val image: String?,
     @SerializedName("strDrink")
     val name: String?,
     @SerializedName("strAlcoholic")
-    val alcoholicFlag: String?
+    val category: String?,
+    var isFavorite: Boolean = false
 ) : FavoritesItem() {
     override fun getType(): Int {
         return Type.COCKTAIL.ordinal

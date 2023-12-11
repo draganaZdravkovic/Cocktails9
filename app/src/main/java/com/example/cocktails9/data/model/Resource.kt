@@ -1,4 +1,4 @@
-package com.example.cocktails9.model
+package com.example.cocktails9.data.model
 
 sealed class Resource<out T> {
     data class Success<out T>(val data: T) : Resource<T>()

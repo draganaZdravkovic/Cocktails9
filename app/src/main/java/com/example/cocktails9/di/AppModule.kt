@@ -2,8 +2,12 @@ package com.example.cocktails9.di
 
 import android.content.Context
 import android.content.res.Resources
-import com.example.cocktails9.api.ApiInterface
-import com.example.cocktails9.repository.CocktailsRepository
+import androidx.room.Room
+import com.example.cocktails9.data.local.FavoritesDao
+import com.example.cocktails9.data.local.FavoritesDatabase
+import com.example.cocktails9.data.remote.ApiInterface
+import com.example.cocktails9.data.repository.CocktailsRepository
+import com.example.cocktails9.data.repository.FavoritesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,9 +53,24 @@ class AppModule {
     fun provideCocktailsRepository(apiInterface: ApiInterface): CocktailsRepository =
         CocktailsRepository(apiInterface)
 
+    @Provides
+    @Singleton
+    fun provideFavoritesRepository(favoritesDao: FavoritesDao): FavoritesRepository =
+        FavoritesRepository(favoritesDao)
+
 
     @Provides
     @Singleton
     fun provideResources(@ApplicationContext context: Context): Resources =
         context.resources
+
+    @Provides
+    @Singleton
+    fun provideFavoritesDao(database: FavoritesDatabase): FavoritesDao = database.favoritesDao()
+
+    @Provides
+    @Singleton
+    fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesDatabase =
+        Room.databaseBuilder(context, FavoritesDatabase::class.java, "favorites-database").build()
+
 }

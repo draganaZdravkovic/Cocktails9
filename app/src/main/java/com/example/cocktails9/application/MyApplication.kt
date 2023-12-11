@@ -1,4 +1,4 @@
-package com.example.cocktails9
+package com.example.cocktails9.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
