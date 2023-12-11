@@ -47,8 +47,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private fun initObservers() {
 
         favoritesViewModel.favoritesListLiveData.observe(viewLifecycleOwner) {
+            if(it.isEmpty())
+                showNotFound()
             adapter.submitList(it)
         }
+    }
+
+    private fun showNotFound() {
+        binding.tvEmpty.visibility = View.VISIBLE
+        binding.tvEmpty.text = resources.getString(R.string.no_cocktails_found)
     }
 
     override fun onDestroyView() {
