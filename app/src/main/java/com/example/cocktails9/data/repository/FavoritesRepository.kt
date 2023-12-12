@@ -14,12 +14,4 @@ class FavoritesRepository @Inject constructor(private val favoritesDao: Favorite
     suspend fun getAllFavoritesId(): List<String> {
         return favoritesDao.getAllFavoritesId()
     }
-
-    suspend fun insertFavorite(cocktail: Cocktails) {
-        favoritesDao.insertFavorite(cocktail)
-    }
-
-    suspend fun removeFavorite(cocktail: Cocktails) {
-        favoritesDao.deleteFavorite(cocktail)
-    }
 }

@@ -38,6 +38,18 @@ class CocktailsViewModel @Inject constructor(
         private const val DELAY = 500L
     }
 
+    fun addFavorite(cocktail: Cocktails) {
+        viewModelScope.launch {
+            cocktailsRepo.insertFavorite(cocktail)
+        }
+    }
+
+    fun removeFavorite(cocktail: Cocktails) {
+        viewModelScope.launch {
+            cocktailsRepo.removeFavorite(cocktail)
+        }
+    }
+
     fun getCocktails(searchQuery: String = "") {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(exceptionHandler) {

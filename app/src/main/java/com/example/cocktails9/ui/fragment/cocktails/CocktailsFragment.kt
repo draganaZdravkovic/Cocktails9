@@ -16,7 +16,6 @@ import com.example.cocktails9.data.model.Resource
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
 import com.example.cocktails9.ui.fragment.cocktails.recyclerview.adapter.CocktailsAdapter
 import com.example.cocktails9.ui.fragment.cocktails.viewmodel.CocktailsViewModel
-import com.example.cocktails9.ui.fragment.favorites.viewmodel.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,7 +25,6 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private lateinit var adapter: CocktailsAdapter
     private val cocktailsViewModel by viewModels<CocktailsViewModel>()
-    private val favoritesViewModel by viewModels<FavoritesViewModel>()
 
     private var isSearchVisible = false
     private var query = ""
@@ -84,13 +82,12 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = CocktailsAdapter()
 
-        adapter.onFavoriteClickListener = { cocktail: Cocktails, position: Int ->
+        adapter.onFavoriteClickListener = { cocktail: Cocktails ->
 
-            if (cocktail.isFavorite) favoritesViewModel.removeFavorite(cocktail)
-            else favoritesViewModel.addFavorite(cocktail)
+            if (cocktail.isFavorite) cocktailsViewModel.removeFavorite(cocktail)
+            else cocktailsViewModel.addFavorite(cocktail)
 
             cocktail.isFavorite = !cocktail.isFavorite
-            adapter.notifyItemChanged(position)
         }
         binding.rvCocktails.adapter = adapter
 

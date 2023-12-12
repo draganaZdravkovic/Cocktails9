@@ -8,6 +8,8 @@ import com.example.cocktails9.data.local.FavoritesDatabase
 import com.example.cocktails9.data.remote.ApiInterface
 import com.example.cocktails9.data.repository.CocktailsRepository
 import com.example.cocktails9.data.repository.FavoritesRepository
+import com.example.cocktails9.ui.fragment.cocktails.CocktailsFragment
+import com.example.cocktails9.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +44,7 @@ class AppModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://www.thecocktaildb.com/api/json/v1/1/")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -50,8 +52,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideCocktailsRepository(apiInterface: ApiInterface): CocktailsRepository =
-        CocktailsRepository(apiInterface)
+    fun provideCocktailsRepository(apiInterface: ApiInterface, favoritesDao: FavoritesDao): CocktailsRepository =
+        CocktailsRepository(apiInterface, favoritesDao)
 
     @Provides
     @Singleton
@@ -71,6 +73,5 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesDatabase =
-        Room.databaseBuilder(context, FavoritesDatabase::class.java, "favorites-database").build()
-
+        Room.databaseBuilder(context, FavoritesDatabase::class.java, Constants.DATABASE_NAME).build()
 }
