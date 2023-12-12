@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".view.CocktailsFragment">
+    tools:context=".ui.fragment.cocktails.CocktailsFragment">
 
     <EditText
         android:id="@+id/etSearchCocktail"
@@ -37,6 +37,8 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="4dp"
         android:background="#AAF091"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/alcoholic"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
