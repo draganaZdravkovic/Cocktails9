@@ -8,6 +8,7 @@ import com.example.cocktails9.data.local.FavoritesDatabase
 import com.example.cocktails9.data.remote.ApiInterface
 import com.example.cocktails9.data.repository.CocktailsRepository
 import com.example.cocktails9.data.repository.FavoritesRepository
+import com.example.cocktails9.data.repository.FilterRepository
 import com.example.cocktails9.ui.fragment.cocktails.CocktailsFragment
 import com.example.cocktails9.utils.Constants
 import dagger.Module
@@ -59,6 +60,11 @@ class AppModule {
     @Singleton
     fun provideFavoritesRepository(favoritesDao: FavoritesDao): FavoritesRepository =
         FavoritesRepository(favoritesDao)
+
+    @Provides
+    @Singleton
+    fun provideFilterRepository(apiInterface: ApiInterface): FilterRepository =
+        FilterRepository(apiInterface)
 
 
     @Provides

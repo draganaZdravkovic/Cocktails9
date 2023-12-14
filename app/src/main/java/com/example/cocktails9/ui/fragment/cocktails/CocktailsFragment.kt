@@ -3,12 +3,13 @@ package com.example.cocktails9.ui.fragment.cocktails
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
 import com.example.cocktails9.data.model.Cocktails
@@ -28,6 +29,12 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private var isSearchVisible = false
     private var query = ""
+    private val search = "Search: "
+
+    private val args: CocktailsFragmentArgs by navArgs()
+    private lateinit var filterBy: String
+    private lateinit var type: String
+    private var params: MutableMap<String, String> = mutableMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +42,12 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCocktailsBinding.inflate(inflater, container, false)
+        filterBy = args.filterBy ?: resources.getString(R.string.filterBy)
+        type = args.type ?: resources.getString(R.string.type)
+        params[filterBy] = type
+
+        if (type.isNotEmpty()) binding.tvFilter.text = type
+
         return binding.root
     }
 
@@ -64,7 +77,9 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
                         return true
                     }
                     R.id.miFilter -> {
-                        Toast.makeText(context, "Filter", Toast.LENGTH_SHORT).show()
+                        val action =
+                            CocktailsFragmentDirections.actionCocktailsFragmentToFilterFragment()
+                        findNavController().navigate(action)
                         return true
                     }
                     else -> false
@@ -74,6 +89,13 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         binding.etSearchCocktail.doAfterTextChanged {
             query = it.toString().trim()
+            binding.tvFilter.text = buildString {
+                append(search)
+                append(query)
+            }
+
+            showHideFilterLabel()
+
             cocktailsViewModel.getCocktails(query)
         }
     }
@@ -98,12 +120,14 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     }
 
     private fun refreshCocktails() {
-        cocktailsViewModel.getCocktails(query)
+        if (filterBy.isEmpty()) cocktailsViewModel.getCocktails(query)
+        else cocktailsViewModel.getCocktailsByCategory(params)
     }
 
     private fun initObservers() {
         cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
+
                 is Resource.Success -> {
                     if (resource.data.isEmpty())
                         showNotFound()
@@ -116,7 +140,15 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
                 is Resource.Error -> showErrorDialog(resource.message)
             }
         }
-        cocktailsViewModel.getCocktails()
+        if (filterBy.isEmpty()) cocktailsViewModel.getCocktails()
+        else cocktailsViewModel.getCocktailsByCategory(params)
+    }
+
+    private fun showHideFilterLabel() {
+        if (query.isEmpty())
+            binding.tvFilter.visibility = View.GONE
+        else
+            binding.tvFilter.visibility = View.VISIBLE
     }
 
     private fun showNotFound() {

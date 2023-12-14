@@ -15,4 +15,14 @@
     <string name="no_cocktails_found">"No cocktails found."</string>
     <string name="cocktails_error">"Error occurred while fetching data!"</string>
     <string name="ok">"OK"</string>
+    <string name="filter_cocktails_by">Filter cocktails by</string>
+    <string-array name="filterList">
+        <item>Alcoholic or not</item>
+        <item>Category</item>
+        <item>Glass used</item>
+        <item>Ingredient</item>
+    </string-array>
+    <string name="filterBy">a</string>
+    <string name="type">Alcoholic</string>
+    <string name="other">Other</string>
 </resources>

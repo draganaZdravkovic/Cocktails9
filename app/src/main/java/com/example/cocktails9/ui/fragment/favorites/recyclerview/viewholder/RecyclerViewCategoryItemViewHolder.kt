@@ -6,7 +6,7 @@ import com.example.cocktails9.databinding.RecyclerViewCategoryItemBinding
 class RecyclerViewCategoryItemViewHolder(private val itemBinding: RecyclerViewCategoryItemBinding) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
-    fun bindItem(category: String) {
+    fun bindItem(category: String?) {
         itemBinding.tvCategory.text = category
     }
 }

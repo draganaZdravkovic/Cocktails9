@@ -53,7 +53,7 @@ class FavoritesAdapter :
             }
             is RecyclerViewCategoryItemViewHolder -> {
                 val category = getItem(position) as Category
-                holder.bindItem(category.category)
+                holder.bindItem(category.alcoholic)
             }
         }
     }
@@ -80,7 +80,7 @@ class FavoritesAdapter :
             return oldItem.getType() == newItem.getType() &&
                     when (oldItem) {
                         is Cocktails -> oldItem.id == (newItem as? Cocktails)?.id
-                        is Category -> oldItem.category == (newItem as? Category)?.category
+                        is Category -> oldItem.alcoholic == (newItem as? Category)?.alcoholic
                     }
         }
 

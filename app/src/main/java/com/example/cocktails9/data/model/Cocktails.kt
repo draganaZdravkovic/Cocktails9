@@ -14,7 +14,7 @@ data class Cocktails(
     @SerializedName("strDrink")
     val name: String?,
     @SerializedName("strAlcoholic")
-    val category: String?,
+    var alcoholic: String?,
     var isFavorite: Boolean = false
 ) : FavoritesItem() {
     override fun getType(): Int {
