@@ -8,8 +8,12 @@ import com.example.cocktails9.databinding.RecyclerViewFavoriteItemBinding
 class RecyclerViewCocktailItemViewHolder(private val itemBinding: RecyclerViewFavoriteItemBinding) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
+    //   Add one space at the end of the word, because the font is cutting the last letter
     fun bindItem(cocktails: Cocktails) {
-        itemBinding.tvCocktailName.text = cocktails.name
+        itemBinding.tvCocktailName.text = buildString {
+            append(cocktails.name)
+            append(" ")
+        }
         Glide.with(itemView).load(cocktails.image).into(itemBinding.imCocktail)
     }
 }

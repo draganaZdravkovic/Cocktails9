@@ -7,8 +7,12 @@ import com.example.cocktails9.databinding.FilterListItemBinding
 class SpecificFilterViewHolder(private val itemBinding: FilterListItemBinding) :
     ViewHolder(itemBinding.root) {
 
+    //   Add one space at the end of the word, because the font is cutting the last letter
     fun bindItem(item: String) {
-        itemBinding.tvFilterItem.text = item
+        itemBinding.tvFilterItem.text = buildString {
+            append(item)
+            append(" ")
+        }
         itemBinding.ivForwardArrow.visibility = View.GONE
     }
 }

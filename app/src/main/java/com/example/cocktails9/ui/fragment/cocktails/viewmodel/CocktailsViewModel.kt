@@ -86,10 +86,16 @@ class CocktailsViewModel @Inject constructor(
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()
 
+//                Not every cocktail has it's category
                 cocktails.forEach { cocktail ->
-                    if (cocktail.alcoholic.isNullOrEmpty()) {
-                        cocktail.alcoholic = resources.getString(R.string.other)
-                    }
+                    val alcoholic = params.values.elementAt(0)
+                    if (alcoholic == "Non alcoholic" ||
+                        alcoholic == "Optional alcohol" ||
+                        alcoholic == "Alcoholic"
+                    )
+                        cocktail.alcoholic = alcoholic
+                    else cocktail.alcoholic = resources.getString(R.string.other)
+
                 }
                 val favoritesId = favoritesRepo.getAllFavoritesId()
                 updateFavoriteStatusInCocktails(favoritesId, cocktails)
