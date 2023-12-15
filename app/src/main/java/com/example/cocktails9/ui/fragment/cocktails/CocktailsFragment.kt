@@ -105,7 +105,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private fun initRecyclerView() {
         layoutmngr = GridLayoutManager(requireContext(), 2)
         binding.rvCocktails.layoutManager = layoutmngr
-        adapter = CocktailsAdapter()
+        adapter = CocktailsAdapter(resources)
 
         adapter.onFavoriteClickListener = { cocktail: Cocktails ->
 

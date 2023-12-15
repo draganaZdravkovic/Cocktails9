@@ -1,5 +1,6 @@
 package com.example.cocktails9.ui.fragment.favorites.recyclerview.adapter
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,7 +15,7 @@ import com.example.cocktails9.databinding.RecyclerViewFavoriteItemBinding
 import com.example.cocktails9.ui.fragment.favorites.recyclerview.viewholder.RecyclerViewCategoryItemViewHolder
 import com.example.cocktails9.ui.fragment.favorites.recyclerview.viewholder.RecyclerViewCocktailItemViewHolder
 
-class FavoritesAdapter :
+class FavoritesAdapter(private val resources: Resources) :
     ListAdapter<FavoritesItem, RecyclerView.ViewHolder>(CocktailsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -25,7 +26,8 @@ class FavoritesAdapter :
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    resources
                 )
             }
             FavoritesItem.Type.CATEGORY.ordinal -> {
@@ -34,7 +36,8 @@ class FavoritesAdapter :
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    resources
                 )
             }
             else -> throw IllegalArgumentException("Invalid view type")

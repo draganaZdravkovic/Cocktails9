@@ -1,16 +1,17 @@
 package com.example.cocktails9.ui.fragment.favorites.recyclerview.viewholder
 
+import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cocktails9.R
 import com.example.cocktails9.databinding.RecyclerViewCategoryItemBinding
 
-class RecyclerViewCategoryItemViewHolder(private val itemBinding: RecyclerViewCategoryItemBinding) :
+class RecyclerViewCategoryItemViewHolder(
+    private val itemBinding: RecyclerViewCategoryItemBinding,
+    private val resources: Resources
+    ) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
-    //   Add one space at the end of the word, because the font is cutting the last letter
     fun bindItem(category: String?) {
-        itemBinding.tvCategory.text = buildString {
-            append(category)
-            append(" ")
-        }
+        itemBinding.tvCategory.text = resources.getString(R.string.cocktail_name, category)
     }
 }
