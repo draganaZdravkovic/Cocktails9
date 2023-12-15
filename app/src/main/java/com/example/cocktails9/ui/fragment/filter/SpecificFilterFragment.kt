@@ -44,19 +44,16 @@ class SpecificFilterFragment : Fragment(R.layout.fragment_specific_filter) {
         title = args.title
 
         (activity as? AppCompatActivity)?.supportActionBar?.title = title
-        binding.tvFilterBy.text = buildString {
-            append(binding.tvFilterBy.text)
-            append(" ")
-            append(title)
-        }
 
-        params[filterBy] = "list"
+        params[filterBy] = resources.getString(R.string.list)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.tvFilterBy.text = resources.getString(R.string.filter_cocktails_by_specific, title)
 
         initRecyclerView()
         initObservers()
@@ -97,11 +94,11 @@ class SpecificFilterFragment : Fragment(R.layout.fragment_specific_filter) {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
-            refreshCocktails()
+            refreshFilters()
         }
     }
 
-    private fun refreshCocktails() {
+    private fun refreshFilters() {
         specificFilterViewModel.getFilterList(params)
     }
 

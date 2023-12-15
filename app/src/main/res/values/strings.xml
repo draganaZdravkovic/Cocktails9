@@ -16,6 +16,7 @@
     <string name="cocktails_error">"Error occurred while fetching data!"</string>
     <string name="ok">"OK"</string>
     <string name="filter_cocktails_by">Filter cocktails by</string>
+    <string name="filter_cocktails_by_specific">Filter cocktails by %1$s</string>
     <string-array name="filterList">
         <item>Alcoholic or not</item>
         <item>Category</item>
@@ -25,4 +26,6 @@
     <string name="filterBy">a</string>
     <string name="type">Alcoholic</string>
     <string name="other">Other</string>
+    <string name="search_label">Search: %1$s</string>
+    <string name="list">list</string>
 </resources>

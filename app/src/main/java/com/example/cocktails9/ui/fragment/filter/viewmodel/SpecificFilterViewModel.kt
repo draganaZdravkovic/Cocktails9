@@ -11,7 +11,6 @@ import com.example.cocktails9.data.model.Resource
 import com.example.cocktails9.data.repository.FilterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,11 +26,8 @@ class SpecificFilterViewModel @Inject constructor(
         _getFilterList.value = Resource.Error(exception.message.toString())
     }
 
-    private var searchJob: Job? = null
-
     fun getFilterList(params: Map<String, String>) {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
 
             _getFilterList.value = Resource.Loading(true)
 

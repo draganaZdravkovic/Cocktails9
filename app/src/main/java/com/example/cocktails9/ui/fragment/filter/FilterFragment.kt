@@ -42,32 +42,18 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         binding.lvFilter.adapter = adapter
 
         binding.lvFilter.setOnItemClickListener { _, _, position, _ ->
-            val filterBy: String
-            val title: String
-            when (position) {
-                0 -> {
-                    filterBy = "a"
-                    title = adapter.getItem(position).toString()
-                }
-                1 -> {
-                    filterBy = "c"
-                    title = adapter.getItem(position).toString()
-                }
-                2 -> {
-                    filterBy = "g"
-                    title = adapter.getItem(position).toString()
-                }
-                3 -> {
-                    filterBy = "i"
-                    title = adapter.getItem(position).toString()
-                }
-                else -> {
-                    filterBy = "a"
-                    title = adapter.getItem(position).toString()
-                }
+
+            val filterBy = when (position) {
+                0 -> "a"
+                1 -> "c"
+                2 -> "g"
+                3 -> "i"
+                else -> "a"
             }
 
-            val action = FilterFragmentDirections.actionFilterFragmentToSpecificFilterFragment2(
+            val title: String = adapter.getItem(position).toString()
+
+            val action = FilterFragmentDirections.actionFilterFragmentToSpecificFilterFragment(
                 filterBy = filterBy,
                 title = title
             )
