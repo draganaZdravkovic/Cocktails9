@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfig)
 
         bottomNavigationView.setupWithNavController(navController)
+        bottomNavigationView.setOnItemReselectedListener { }
     }
 
     override fun onSupportNavigateUp(): Boolean {

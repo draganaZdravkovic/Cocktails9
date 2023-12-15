@@ -29,7 +29,6 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private var isSearchVisible = false
     private var query = ""
-    private val search = "Search: "
 
     private val args: CocktailsFragmentArgs by navArgs()
     private lateinit var filterBy: String
@@ -42,8 +41,8 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCocktailsBinding.inflate(inflater, container, false)
-        filterBy = args.filterBy ?: resources.getString(R.string.filterBy)
-        type = args.type ?: resources.getString(R.string.type)
+        filterBy = args.filterBy ?: ""
+        type = args.type ?: ""
         params[filterBy] = type
 
         if (type.isNotEmpty()) binding.tvFilter.text = type
@@ -56,6 +55,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         initToolbarMenu()
         initRecyclerView()
+        showHideFilterLabel()
         initObservers()
     }
 
@@ -89,10 +89,10 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         binding.etSearchCocktail.doAfterTextChanged {
             query = it.toString().trim()
-            binding.tvFilter.text = buildString {
-                append(search)
-                append(query)
-            }
+            binding.tvFilter.text = resources.getString(R.string.search_label, query)
+
+            type = ""
+            filterBy = ""
 
             showHideFilterLabel()
 
@@ -140,14 +140,14 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
                 is Resource.Error -> showErrorDialog(resource.message)
             }
         }
-        if (filterBy.isEmpty()) cocktailsViewModel.getCocktails()
-        else cocktailsViewModel.getCocktailsByCategory(params)
+        refreshCocktails()
     }
 
     private fun showHideFilterLabel() {
-        if (query.isEmpty())
-            binding.tvFilter.visibility = View.GONE
-        else
+        if (query.isEmpty()) {
+            if (type.isEmpty())
+                binding.tvFilter.visibility = View.GONE
+        } else
             binding.tvFilter.visibility = View.VISIBLE
     }
 
