@@ -16,6 +16,10 @@ class CocktailsRepository @Inject constructor(
         return apiInterface.getCocktails(searchQuery)
     }
 
+    suspend fun getCocktailsByCategory(params: Map<String, String>): Response<CocktailsResponse> {
+        return apiInterface.getCocktailsByCategory(params)
+    }
+
     suspend fun insertFavorite(cocktail: Cocktails) {
         favoritesDao.insertFavorite(cocktail)
     }

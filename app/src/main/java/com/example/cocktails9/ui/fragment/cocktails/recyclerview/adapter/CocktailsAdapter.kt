@@ -1,5 +1,6 @@
 package com.example.cocktails9.ui.fragment.cocktails.recyclerview.adapter
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,7 +12,7 @@ import com.example.cocktails9.data.model.Cocktails
 import com.example.cocktails9.databinding.RecyclerViewCocktailItemBinding
 import com.example.cocktails9.ui.fragment.cocktails.recyclerview.viewholder.CocktailsViewHolder
 
-class CocktailsAdapter :
+class CocktailsAdapter(private val resources: Resources) :
     ListAdapter<Cocktails, CocktailsViewHolder>(CocktailsDiffCallback()) {
 
     var onFavoriteClickListener: ((cocktail: Cocktails) -> Unit)? = null
@@ -22,7 +23,7 @@ class CocktailsAdapter :
             parent,
             false
         )
-        return CocktailsViewHolder(itemBinding).apply {
+        return CocktailsViewHolder(itemBinding, resources).apply {
             onViewHolderCreated(this, itemBinding)
         }
     }

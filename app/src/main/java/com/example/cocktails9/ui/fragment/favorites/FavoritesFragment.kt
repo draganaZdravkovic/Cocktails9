@@ -39,7 +39,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     private fun initRecyclerView() {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
-        adapter = FavoritesAdapter()
+        adapter = FavoritesAdapter(resources)
         binding.rvCocktails.adapter = adapter
     }
 

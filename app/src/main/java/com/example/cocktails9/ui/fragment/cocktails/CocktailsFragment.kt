@@ -3,12 +3,13 @@ package com.example.cocktails9.ui.fragment.cocktails
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
 import com.example.cocktails9.data.model.Cocktails
@@ -29,12 +30,25 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private var isSearchVisible = false
     private var query = ""
 
+    private val args: CocktailsFragmentArgs by navArgs()
+    private lateinit var filterBy: String
+    private lateinit var type: String
+    private var params: MutableMap<String, String> = mutableMapOf()
+
+    private lateinit var layoutmngr: GridLayoutManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCocktailsBinding.inflate(inflater, container, false)
+        filterBy = args.filterBy ?: ""
+        type = args.type ?: ""
+        params[filterBy] = type
+
+        if (type.isNotEmpty()) binding.tvFilter.text = type
+
         return binding.root
     }
 
@@ -43,6 +57,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         initToolbarMenu()
         initRecyclerView()
+        showHideFilterLabel()
         initObservers()
     }
 
@@ -64,7 +79,9 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
                         return true
                     }
                     R.id.miFilter -> {
-                        Toast.makeText(context, "Filter", Toast.LENGTH_SHORT).show()
+                        val action =
+                            CocktailsFragmentDirections.actionCocktailsFragmentToFilterFragment()
+                        findNavController().navigate(action)
                         return true
                     }
                     else -> false
@@ -74,13 +91,21 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         binding.etSearchCocktail.doAfterTextChanged {
             query = it.toString().trim()
+            binding.tvFilter.text = resources.getString(R.string.search_label, query)
+
+            type = ""
+            filterBy = ""
+
+            showHideFilterLabel()
+
             cocktailsViewModel.getCocktails(query)
         }
     }
 
     private fun initRecyclerView() {
-        binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
-        adapter = CocktailsAdapter()
+        layoutmngr = GridLayoutManager(requireContext(), 2)
+        binding.rvCocktails.layoutManager = layoutmngr
+        adapter = CocktailsAdapter(resources)
 
         adapter.onFavoriteClickListener = { cocktail: Cocktails ->
 
@@ -98,25 +123,36 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     }
 
     private fun refreshCocktails() {
-        cocktailsViewModel.getCocktails(query)
+        if (filterBy.isEmpty()) cocktailsViewModel.getCocktails(query)
+        else cocktailsViewModel.getCocktailsByCategory(params)
     }
 
     private fun initObservers() {
         cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
+
                 is Resource.Success -> {
                     if (resource.data.isEmpty())
                         showNotFound()
                     else
                         showLoading(false)
-
+                    
                     adapter.submitList(resource.data)
+                    binding.rvCocktails.layoutManager?.smoothScrollToPosition(binding.rvCocktails,null, 0)
                 }
                 is Resource.Loading -> showLoading(resource.isLoading)
                 is Resource.Error -> showErrorDialog(resource.message)
             }
         }
-        cocktailsViewModel.getCocktails()
+        refreshCocktails()
+    }
+
+    private fun showHideFilterLabel() {
+        if (query.isEmpty()) {
+            if (type.isEmpty())
+                binding.tvFilter.visibility = View.GONE
+        } else
+            binding.tvFilter.visibility = View.VISIBLE
     }
 
     private fun showNotFound() {

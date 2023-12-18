@@ -76,6 +76,41 @@ class CocktailsViewModel @Inject constructor(
         }
     }
 
+    fun getCocktailsByCategory(params: Map<String, String>) {
+        viewModelScope.launch(exceptionHandler) {
+
+            _getCocktailsList.value = Resource.Loading(true)
+
+            val response = cocktailsRepo.getCocktailsByCategory(params)
+
+            if (response.isSuccessful) {
+                val cocktails = response.body()?.list ?: emptyList()
+
+//                Not every cocktail has it's category
+                cocktails.forEach { cocktail ->
+                    val alcoholic = params.values.elementAt(0)
+                    if (alcoholic == "Non alcoholic" ||
+                        alcoholic == "Optional alcohol" ||
+                        alcoholic == "Alcoholic"
+                    )
+                        cocktail.alcoholic = alcoholic
+                    else cocktail.alcoholic = resources.getString(R.string.other)
+
+                }
+                val favoritesId = favoritesRepo.getAllFavoritesId()
+                updateFavoriteStatusInCocktails(favoritesId, cocktails)
+                _getCocktailsList.value = Resource.Success(cocktails)
+            } else {
+                _getCocktailsList.value = Resource.Error(
+                    resources.getString(
+                        R.string.cocktails_error
+                    )
+                )
+            }
+            _getCocktailsList.value = Resource.Loading(false)
+        }
+    }
+
     private fun updateFavoriteStatusInCocktails(
         favoritesId: List<String>,
         cocktails: List<Cocktails>

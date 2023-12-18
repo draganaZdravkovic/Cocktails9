@@ -1,18 +1,30 @@
 <resources>
     <string name="app_name">Cocktails9</string>
-    <string name="cocktails">Cocktails</string>
-    <string name="favorites">Favorites</string>
-    <string name="profile">Profile</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="logout">Logout</string>
+    <string name="cocktails">Cocktails\u0020</string>
+    <string name="favorites">Favorites\u0020</string>
+    <string name="profile">Profile\u0020</string>
+    <string name="email">Email\u0020</string>
+    <string name="password">Password\u0020</string>
+    <string name="logout">Logout\u0020</string>
     <string name="intern2023">intern2023</string>
     <string name="example_levi9_com">example@levi9.com</string>
     <string name="search">Search</string>
     <string name="filter">Filter</string>
     <string name="type_in_cocktail_s_name">Type in cocktail\'s name</string>
     <string name="alcoholic">Alcoholic</string>
-    <string name="no_cocktails_found">"No cocktails found."</string>
-    <string name="cocktails_error">"Error occurred while fetching data!"</string>
-    <string name="ok">"OK"</string>
+    <string name="no_cocktails_found">No cocktails found.</string>
+    <string name="cocktails_error">Error occurred while fetching data!</string>
+    <string name="ok">OK</string>
+    <string name="filter_cocktails_by">Filter cocktails by \u0020</string>
+    <string name="filter_cocktails_by_specific">Filter cocktails by %1$s \u0020</string>
+    <string-array name="filterList">
+        <item>Alcoholic or not\u0020</item>
+        <item>Category\u0020</item>
+        <item>Glass used\u0020</item>
+        <item>Ingredient\u0020</item>
+    </string-array>
+    <string name="other">Other\u0020</string>
+    <string name="search_label">Search: %1$s \u0020</string>
+    <string name="list">list</string>
+    <string name="cocktail_name">%1$s \u0020</string>
 </resources>
