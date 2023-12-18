@@ -46,7 +46,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfig)
 
         bottomNavigationView.setupWithNavController(navController)
-        bottomNavigationView.setOnItemReselectedListener { }
+        bottomNavigationView.setOnItemReselectedListener { item ->
+            navController.popBackStack(item.itemId,false)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
