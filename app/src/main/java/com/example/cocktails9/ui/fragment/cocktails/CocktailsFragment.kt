@@ -15,6 +15,7 @@ import com.example.cocktails9.R
 import com.example.cocktails9.data.model.Cocktails
 import com.example.cocktails9.data.model.Resource
 import com.example.cocktails9.databinding.FragmentCocktailsBinding
+import com.example.cocktails9.ui.activity.MainActivity
 import com.example.cocktails9.ui.fragment.cocktails.recyclerview.adapter.CocktailsAdapter
 import com.example.cocktails9.ui.fragment.cocktails.viewmodel.CocktailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +38,8 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
     private lateinit var layoutmngr: GridLayoutManager
 
+    private lateinit var userEmail: String
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +49,8 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         filterBy = args.filterBy ?: ""
         type = args.type ?: ""
         params[filterBy] = type
+
+        userEmail = (activity as MainActivity).userEmail
 
         if (type.isNotEmpty()) binding.tvFilter.text = type
 
@@ -98,7 +103,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
             showHideFilterLabel()
 
-            cocktailsViewModel.getCocktails(query)
+            cocktailsViewModel.getCocktails(query, userEmail)
         }
     }
 
@@ -108,9 +113,11 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
         adapter = CocktailsAdapter(resources)
 
         adapter.onFavoriteClickListener = { cocktail: Cocktails ->
-
-            if (cocktail.isFavorite) cocktailsViewModel.removeFavorite(cocktail)
-            else cocktailsViewModel.addFavorite(cocktail)
+            if (cocktail.isFavorite) cocktailsViewModel.removeFavorite(
+                cocktail,
+                (activity as MainActivity).userEmail
+            )
+            else cocktailsViewModel.addFavorite(cocktail, userEmail)
 
             cocktail.isFavorite = !cocktail.isFavorite
         }
@@ -123,22 +130,28 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     }
 
     private fun refreshCocktails() {
-        if (filterBy.isEmpty()) cocktailsViewModel.getCocktails(query)
+        if (filterBy.isEmpty()) cocktailsViewModel.getCocktails(
+            query,
+            (activity as MainActivity).userEmail
+        )
         else cocktailsViewModel.getCocktailsByCategory(params)
     }
 
     private fun initObservers() {
         cocktailsViewModel.getCocktailsList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-
                 is Resource.Success -> {
                     if (resource.data.isEmpty())
                         showNotFound()
                     else
                         showLoading(false)
-                    
+
                     adapter.submitList(resource.data)
-                    binding.rvCocktails.layoutManager?.smoothScrollToPosition(binding.rvCocktails,null, 0)
+                    binding.rvCocktails.layoutManager?.smoothScrollToPosition(
+                        binding.rvCocktails,
+                        null,
+                        0
+                    )
                 }
                 is Resource.Loading -> showLoading(resource.isLoading)
                 is Resource.Error -> showErrorDialog(resource.message)

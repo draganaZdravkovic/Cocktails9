@@ -2,6 +2,7 @@ package com.example.cocktails9.ui.activity
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,15 +11,19 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.cocktails9.R
 import com.example.cocktails9.databinding.ActivityMainBinding
+import com.example.cocktails9.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    lateinit var userEmail: String
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        userEmail = intent.getStringExtra(Constants.EMAIL_KEY) ?: ""
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 

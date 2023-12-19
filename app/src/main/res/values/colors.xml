@@ -14,4 +14,7 @@
     <color name="bottom_nav_selected_item">#FFFFFF</color>
 
     <color name="separator">#9A000000</color>
+
+    <color name="hintColor">#4D000000</color>
+    <color name="green">#36682C</color>
 </resources>

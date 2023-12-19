@@ -1,14 +1,17 @@
 package com.example.cocktails9.ui.fragment.favorites
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
 import com.example.cocktails9.databinding.FragmentFavoritesBinding
+import com.example.cocktails9.ui.activity.MainActivity
 import com.example.cocktails9.ui.fragment.favorites.recyclerview.adapter.FavoritesAdapter
 import com.example.cocktails9.ui.fragment.favorites.viewmodel.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +22,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private val binding get() = _binding!!
 
     private lateinit var adapter: FavoritesAdapter
+
     private val favoritesViewModel by viewModels<FavoritesViewModel>()
 
     override fun onCreateView(
@@ -30,6 +34,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,10 +49,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initObservers() {
+        favoritesViewModel.getFavorites((activity as MainActivity).userEmail)
 
         favoritesViewModel.favoritesListLiveData.observe(viewLifecycleOwner) {
-            if(it.isEmpty())
+            if (it.isNullOrEmpty())
                 showNotFound()
             adapter.submitList(it)
         }

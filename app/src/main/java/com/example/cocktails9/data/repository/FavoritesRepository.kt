@@ -7,11 +7,11 @@ import javax.inject.Inject
 
 class FavoritesRepository @Inject constructor(private val favoritesDao: FavoritesDao) {
 
-    fun getFavorites(): LiveData<List<Cocktails>> {
-        return favoritesDao.getAllFavorites()
+    fun getFavorites(userEmail: String): LiveData<List<Cocktails>> {
+        return favoritesDao.getAllFavorites(userEmail)
     }
 
-    suspend fun getAllFavoritesId(): List<String> {
-        return favoritesDao.getAllFavoritesId()
+    suspend fun getAllFavoritesId(userEmail: String): List<String> {
+        return favoritesDao.getAllFavoritesId(userEmail)
     }
 }

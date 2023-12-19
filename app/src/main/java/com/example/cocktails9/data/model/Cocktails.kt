@@ -15,7 +15,8 @@ data class Cocktails(
     val name: String?,
     @SerializedName("strAlcoholic")
     var alcoholic: String?,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
+    var userEmail: String?
 ) : FavoritesItem() {
     override fun getType(): Int {
         return Type.COCKTAIL.ordinal

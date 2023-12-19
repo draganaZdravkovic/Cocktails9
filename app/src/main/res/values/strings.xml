@@ -3,8 +3,8 @@
     <string name="cocktails">Cocktails\u0020</string>
     <string name="favorites">Favorites\u0020</string>
     <string name="profile">Profile\u0020</string>
-    <string name="email">Email\u0020</string>
-    <string name="password">Password\u0020</string>
+    <string name="email">email\u0020</string>
+    <string name="password">password\u0020</string>
     <string name="logout">Logout\u0020</string>
     <string name="intern2023">intern2023</string>
     <string name="example_levi9_com">example@levi9.com</string>
@@ -27,8 +27,19 @@
     <string name="search_label">Search: %1$s \u0020</string>
     <string name="list">list</string>
     <string name="cocktail_name">%1$s \u0020</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="login">LoGin</string>
-    <string name="register">Register</string>
+    <string name="login"><b>Login</b>\u0020</string>
+    <string name="loGin">Lo<b>Gin</b>\u0020</string>
+    <string name="regiStar">Regi<b>Star</b>\u0020</string>
+    <string name="register"><b>Register</b>\u0020</string>
+    <string name="or">or\u0020</string>
+    <string name="name">name\u0020</string>
+    <string name="successfully_registered">You are successfully registered!\u0020</string>
+    <string name="invalid_name">Invalid name!\u0020</string>
+    <string name="invalid_email">Invalid email!\u0020</string>
+    <string name="password_validation">Password must have at least 6 characters, one letter and one number!\u0020</string>
+    <string name="email_validation_empty">Email cannot be empty!\u0020</string>
+    <string name="password_validation_empty">Password cannot be empty!\u0020</string>
+    <string name="not_registered">You are not registered!\u0020</string>
+    <string name="welcome_back">Welcome back %1$s \u0020</string>
+    <string name="registered">You are already registered! \u0020</string>
 </resources>
