@@ -9,11 +9,11 @@ import com.example.cocktails9.data.model.Cocktails
 
 @Dao
 interface FavoritesDao {
-    @Query("SELECT * FROM favorites")
-    fun getAllFavorites(): LiveData< List<Cocktails>>
+    @Query("SELECT * FROM favorites WHERE userEmail = :userEmail")
+    fun getAllFavorites(userEmail: String): LiveData< List<Cocktails>>
 
-    @Query("SELECT id FROM favorites")
-    suspend fun getAllFavoritesId(): List<String>
+    @Query("SELECT id FROM favorites WHERE userEmail = :userEmail")
+    suspend fun getAllFavoritesId(userEmail: String): List<String>
 
     @Upsert
     suspend fun insertFavorite(favoriteCocktail: Cocktails)

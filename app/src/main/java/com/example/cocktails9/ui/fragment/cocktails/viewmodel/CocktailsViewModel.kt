@@ -1,5 +1,6 @@
 package com.example.cocktails9.ui.fragment.cocktails.viewmodel
 
+import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.example.cocktails9.data.model.Cocktails
 import com.example.cocktails9.data.model.Resource
 import com.example.cocktails9.data.repository.CocktailsRepository
 import com.example.cocktails9.data.repository.FavoritesRepository
+import com.example.cocktails9.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -21,8 +23,8 @@ import javax.inject.Inject
 class CocktailsViewModel @Inject constructor(
     private val cocktailsRepo: CocktailsRepository,
     private val favoritesRepo: FavoritesRepository,
-    private val resources: Resources
-
+    private val resources: Resources,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
     private val _getCocktailsList: MutableLiveData<Resource<List<Cocktails>>> = MutableLiveData()
     val getCocktailsList: LiveData<Resource<List<Cocktails>>> get() = _getCocktailsList
@@ -38,19 +40,24 @@ class CocktailsViewModel @Inject constructor(
         private const val DELAY = 500L
     }
 
-    fun addFavorite(cocktail: Cocktails) {
+    fun addFavorite(cocktail: Cocktails, userEmail: String) {
         viewModelScope.launch {
+
+            cocktail.userEmail =
+                sharedPreferences.getString(Constants.EMAIL_KEY + userEmail, null)
             cocktailsRepo.insertFavorite(cocktail)
         }
     }
 
-    fun removeFavorite(cocktail: Cocktails) {
+    fun removeFavorite(cocktail: Cocktails, userEmail: String) {
         viewModelScope.launch {
+            cocktail.userEmail =
+                sharedPreferences.getString(Constants.EMAIL_KEY + userEmail, null)
             cocktailsRepo.removeFavorite(cocktail)
         }
     }
 
-    fun getCocktails(searchQuery: String = "") {
+    fun getCocktails(searchQuery: String = "", userEmail: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(exceptionHandler) {
 
@@ -62,8 +69,12 @@ class CocktailsViewModel @Inject constructor(
 
             if (response.isSuccessful) {
                 val cocktails = response.body()?.list ?: emptyList()
-                val favoritesId = favoritesRepo.getAllFavoritesId()
-                updateFavoriteStatusInCocktails(favoritesId, cocktails)
+                val favoritesId =
+                    sharedPreferences.getString(Constants.EMAIL_KEY + userEmail, null)
+                        ?.let { favoritesRepo.getAllFavoritesId(it) }
+                if (favoritesId != null) {
+                    updateFavoriteStatusInCocktails(favoritesId, cocktails)
+                }
                 _getCocktailsList.value = Resource.Success(cocktails)
             } else {
                 _getCocktailsList.value = Resource.Error(
@@ -97,8 +108,11 @@ class CocktailsViewModel @Inject constructor(
                     else cocktail.alcoholic = resources.getString(R.string.other)
 
                 }
-                val favoritesId = favoritesRepo.getAllFavoritesId()
-                updateFavoriteStatusInCocktails(favoritesId, cocktails)
+                val favoritesId = sharedPreferences.getString(Constants.EMAIL_KEY, null)
+                    ?.let { favoritesRepo.getAllFavoritesId(it) }
+                if (favoritesId != null) {
+                    updateFavoriteStatusInCocktails(favoritesId, cocktails)
+                }
                 _getCocktailsList.value = Resource.Success(cocktails)
             } else {
                 _getCocktailsList.value = Resource.Error(

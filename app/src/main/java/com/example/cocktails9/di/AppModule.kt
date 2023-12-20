@@ -1,7 +1,9 @@
 package com.example.cocktails9.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import com.example.cocktails9.data.local.FavoritesDao
 import com.example.cocktails9.data.local.FavoritesDatabase
@@ -79,5 +81,12 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesDatabase =
-        Room.databaseBuilder(context, FavoritesDatabase::class.java, Constants.DATABASE_NAME).build()
+        Room.databaseBuilder(context, FavoritesDatabase::class.java, Constants.DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences(Constants.SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 }
