@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cream"
+    tools:context=".ui.fragment.details.CocktailDetailsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivAlcoholic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/tvName"
+            app:layout_constraintTop_toBottomOf="@+id/tvName"
+            app:srcCompat="@drawable/ic_alcoholic"
+            android:contentDescription="@string/icon" />
+
+        <ImageView
+            android:id="@+id/ivCocktail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/c1"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/icon"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/cocktails"
+            android:textColor="@color/black"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCocktail" />
+
+        <ImageView
+            android:id="@+id/ivFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_fav_off"
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvName"
+            android:contentDescription="@string/icon"/>
+
+        <TextView
+            android:id="@+id/tvAlcoholic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/alcoholic"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ivAlcoholic"
+            app:layout_constraintStart_toEndOf="@+id/ivAlcoholic"
+            app:layout_constraintTop_toTopOf="@+id/ivAlcoholic" />
+
+        <ImageView
+            android:id="@+id/ivCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_category"
+            app:layout_constraintStart_toStartOf="@+id/ivAlcoholic"
+            app:layout_constraintTop_toBottomOf="@+id/ivAlcoholic"
+            android:contentDescription="@string/icon"/>
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/category"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCategory"
+            app:layout_constraintStart_toEndOf="@+id/ivCategory"
+            app:layout_constraintTop_toTopOf="@+id/ivCategory" />
+
+        <ImageView
+            android:id="@+id/ivGlass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_glass"
+            app:layout_constraintStart_toStartOf="@+id/ivCategory"
+            app:layout_constraintTop_toBottomOf="@+id/ivCategory"
+            android:contentDescription="@string/icon"/>
+
+        <TextView
+            android:id="@+id/tvGlassType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/glass_type"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ivGlass"
+            app:layout_constraintStart_toEndOf="@+id/ivGlass"
+            app:layout_constraintTop_toTopOf="@+id/ivGlass" />
+
+        <TextView
+            android:id="@+id/tvSpecificCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@color/secondary"
+            android:paddingHorizontal="10dp"
+            android:text="@string/beer"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCategory"
+            app:layout_constraintStart_toEndOf="@+id/tvCategory"
+            app:layout_constraintTop_toTopOf="@+id/tvCategory" />
+
+        <TextView
+            android:id="@+id/tvSpecificGlassType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@color/secondary"
+            android:paddingHorizontal="10dp"
+            android:text="@string/beer_glass"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvGlassType"
+            app:layout_constraintStart_toEndOf="@+id/tvGlassType"
+            app:layout_constraintTop_toTopOf="@+id/tvGlassType" />
+
+        <TextView
+            android:id="@+id/tvIngredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/ingredients"
+            android:textColor="@color/black"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/ivGlass"
+            app:layout_constraintTop_toBottomOf="@+id/ivGlass" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvIngredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/tvIngredients"
+            app:layout_constraintTop_toBottomOf="@+id/tvIngredients" />
+
+        <TextView
+            android:id="@+id/tvInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/instructions"
+            android:textColor="@color/black"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tvIngredients"
+            app:layout_constraintTop_toBottomOf="@+id/rvIngredients" />
+
+        <TextView
+            android:id="@+id/tvSpecificInstructions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/instructions"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="@+id/tvInstructions"
+            app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

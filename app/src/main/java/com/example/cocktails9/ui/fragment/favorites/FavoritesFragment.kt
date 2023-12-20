@@ -48,8 +48,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         binding.rvCocktails.adapter = adapter
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun initObservers() {
         favoritesViewModel.getFavorites((activity as MainActivity).userEmail)
 

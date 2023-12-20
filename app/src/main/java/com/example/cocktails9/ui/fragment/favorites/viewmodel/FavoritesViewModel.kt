@@ -1,7 +1,5 @@
 package com.example.cocktails9.ui.fragment.favorites.viewmodel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -22,18 +20,12 @@ class FavoritesViewModel @Inject constructor(private val repository: FavoritesRe
     private lateinit var _getFavoritesListLiveData: LiveData<List<FavoritesItem>>
     val favoritesListLiveData: LiveData<List<FavoritesItem>> get() = _getFavoritesListLiveData
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun getFavorites(userEmail: String) {
         _getFavoritesListLiveData = repository.getFavorites(userEmail).map {
             sortCocktailsToCategories(it)
         }
-//        val s = repository.getFavorites(userEmail).map {
-//            sortCocktailsToCategories(it)
-//        }
-//        _getFavoritesListLiveData = s
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun sortCocktailsToCategories(favorites: List<Cocktails>): List<FavoritesItem> {
         val categoryMap: MutableMap<String, MutableList<Cocktails>> = mutableMapOf()
 
