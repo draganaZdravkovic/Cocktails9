@@ -23,12 +23,19 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_cocktailsFragment_to_cocktailDetailsFragment"
+            app:destination="@id/cocktailDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.cocktails9.ui.fragment.favorites.FavoritesFragment"
         android:label="Favorites "
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_cocktailDetailsFragment"
+            app:destination="@id/cocktailDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.cocktails9.ui.fragment.profile.ProfileFragment"
@@ -59,5 +66,21 @@
             app:destination="@id/cocktailsFragment"
             app:popUpTo="@id/cocktailsFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/cocktailDetailsFragment"
+        android:name="com.example.cocktails9.ui.fragment.details.CocktailDetailsFragment"
+        android:label="Cocktail details "
+        tools:layout="@layout/fragment_cocktail_details" >
+        <action
+            android:id="@+id/action_cocktailDetailsFragment_to_cocktailsFragment"
+            app:destination="@id/cocktailsFragment" />
+        <argument
+            android:name="drinkID"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="isFavorite"
+            app:argType="boolean" />
     </fragment>
 </navigation>

@@ -114,19 +114,30 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
 
         adapter.onFavoriteClickListener = { cocktail: Cocktails ->
             if (cocktail.isFavorite) cocktailsViewModel.removeFavorite(
-                cocktail,
+                cocktail.id,
                 (activity as MainActivity).userEmail
             )
             else cocktailsViewModel.addFavorite(cocktail, userEmail)
 
             cocktail.isFavorite = !cocktail.isFavorite
         }
+
+        adapter.onItemClickListener = { cocktail: Cocktails ->
+            val action =
+                CocktailsFragmentDirections.actionCocktailsFragmentToCocktailDetailsFragment(
+                    drinkID = cocktail.id,
+                    isFavorite = cocktail.isFavorite
+                )
+            findNavController().navigate(action)
+        }
+
         binding.rvCocktails.adapter = adapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
             refreshCocktails()
         }
+
     }
 
     private fun refreshCocktails() {

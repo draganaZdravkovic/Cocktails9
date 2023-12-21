@@ -44,16 +44,14 @@ class CocktailsViewModel @Inject constructor(
         viewModelScope.launch {
 
             cocktail.userEmail =
-                sharedPreferences.getString(Constants.EMAIL_KEY + userEmail, null)
+                sharedPreferences.getString(Constants.EMAIL_KEY + userEmail, null) ?: ""
             cocktailsRepo.insertFavorite(cocktail)
         }
     }
 
-    fun removeFavorite(cocktail: Cocktails, userEmail: String) {
+    fun removeFavorite(cocktailID: String, userEmail: String) {
         viewModelScope.launch {
-            cocktail.userEmail =
-                sharedPreferences.getString(Constants.EMAIL_KEY + userEmail, null)
-            cocktailsRepo.removeFavorite(cocktail)
+            cocktailsRepo.removeFavorite(cocktailID, userEmail)
         }
     }
 

@@ -14,11 +14,9 @@ class CocktailsViewHolder(
 ) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
-    //   Add one space at the end of the word, because the font is cutting the last letter
     fun bindItem(cocktails: Cocktails) {
         itemBinding.tvCocktailName.text =
-            resources.getString(R.string.cocktail_name, cocktails.name)
-
+            resources.getString(R.string.text_with_end_space, cocktails.name)
 
         Glide.with(itemView).load(cocktails.image).into(itemBinding.imCocktail)
         if (cocktails.isFavorite) setImage(itemBinding.ivFavorite, R.drawable.ic_fav_on)

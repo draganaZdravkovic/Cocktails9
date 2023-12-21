@@ -16,6 +16,7 @@ class CocktailsAdapter(private val resources: Resources) :
     ListAdapter<Cocktails, CocktailsViewHolder>(CocktailsDiffCallback()) {
 
     var onFavoriteClickListener: ((cocktail: Cocktails) -> Unit)? = null
+    var onItemClickListener: ((cocktail: Cocktails) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailsViewHolder {
         val itemBinding = RecyclerViewCocktailItemBinding.inflate(
@@ -32,7 +33,7 @@ class CocktailsAdapter(private val resources: Resources) :
         cocktailsViewHolder: CocktailsViewHolder,
         binding: RecyclerViewCocktailItemBinding
     ) {
-        binding.root.setOnClickListener {
+        binding.ivFavorite.setOnClickListener {
             val item = getItem(cocktailsViewHolder.bindingAdapterPosition)
             val imgRes =
                 if (item.isFavorite) R.drawable.ic_fav_off_background
@@ -41,6 +42,11 @@ class CocktailsAdapter(private val resources: Resources) :
             setImage(binding.ivFavorite, imgRes)
 
             onFavoriteClickListener?.invoke(item)
+        }
+
+        binding.imCocktail.setOnClickListener {
+            val item = getItem(cocktailsViewHolder.bindingAdapterPosition)
+            onItemClickListener?.invoke(item)
         }
     }
 

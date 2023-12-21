@@ -18,29 +18,45 @@ import com.example.cocktails9.ui.fragment.favorites.recyclerview.viewholder.Recy
 class FavoritesAdapter(private val resources: Resources) :
     ListAdapter<FavoritesItem, RecyclerView.ViewHolder>(CocktailsDiffCallback()) {
 
+    var onItemClickListener: ((cocktail: Cocktails) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
+        when (viewType) {
             FavoritesItem.Type.COCKTAIL.ordinal -> {
-                RecyclerViewCocktailItemViewHolder(
+                val itemBinding =
                     RecyclerViewFavoriteItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    ),
+                    )
+                return RecyclerViewCocktailItemViewHolder(
+                    itemBinding,
                     resources
-                )
+                ).apply { onCocktailViewHolderCreated(this, itemBinding) }
             }
             FavoritesItem.Type.CATEGORY.ordinal -> {
-                RecyclerViewCategoryItemViewHolder(
-                    RecyclerViewCategoryItemBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    ),
-                    resources
+                val itemBinding = RecyclerViewCategoryItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
                 )
+                return RecyclerViewCategoryItemViewHolder(itemBinding, resources)
             }
             else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+    private fun onCocktailViewHolderCreated(
+        holder: RecyclerView.ViewHolder,
+        binding: RecyclerViewFavoriteItemBinding
+    ) {
+        binding.root.setOnClickListener {
+            when (holder) {
+                is RecyclerViewCocktailItemViewHolder -> {
+                    val item = getItem(holder.bindingAdapterPosition) as Cocktails
+                    onItemClickListener?.invoke(item)
+                }
+            }
         }
     }
 
@@ -87,7 +103,10 @@ class FavoritesAdapter(private val resources: Resources) :
                     }
         }
 
-        override fun areContentsTheSame(oldItem: FavoritesItem, newItem: FavoritesItem): Boolean {
+        override fun areContentsTheSame(
+            oldItem: FavoritesItem,
+            newItem: FavoritesItem
+        ): Boolean {
             return oldItem == newItem
         }
     }

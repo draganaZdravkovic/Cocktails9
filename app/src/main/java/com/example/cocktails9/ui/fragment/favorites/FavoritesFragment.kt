@@ -1,15 +1,15 @@
 package com.example.cocktails9.ui.fragment.favorites
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cocktails9.R
+import com.example.cocktails9.data.model.Cocktails
 import com.example.cocktails9.databinding.FragmentFavoritesBinding
 import com.example.cocktails9.ui.activity.MainActivity
 import com.example.cocktails9.ui.fragment.favorites.recyclerview.adapter.FavoritesAdapter
@@ -34,7 +34,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,6 +45,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         binding.rvCocktails.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = FavoritesAdapter(resources)
         binding.rvCocktails.adapter = adapter
+
+        adapter.onItemClickListener = { cocktail: Cocktails ->
+            val action =
+                FavoritesFragmentDirections.actionFavoritesFragmentToCocktailDetailsFragment(
+                    drinkID = cocktail.id,
+                    isFavorite = cocktail.isFavorite
+                )
+            findNavController().navigate(action)
+        }
     }
 
     private fun initObservers() {

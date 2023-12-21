@@ -16,21 +16,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/icon"
             app:layout_constraintStart_toStartOf="@+id/tvName"
             app:layout_constraintTop_toBottomOf="@+id/tvName"
-            app:srcCompat="@drawable/ic_alcoholic"
-            android:contentDescription="@string/icon" />
+            app:srcCompat="@drawable/ic_alcoholic" />
 
         <ImageView
             android:id="@+id/ivCocktail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:contentDescription="@string/icon"
             android:src="@drawable/c1"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/icon"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvName"
@@ -47,14 +47,14 @@
 
         <ImageView
             android:id="@+id/ivFav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="20dp"
+            android:contentDescription="@string/icon"
             android:src="@drawable/ic_fav_off"
             app:layout_constraintBottom_toBottomOf="@+id/tvName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvName"
-            android:contentDescription="@string/icon"/>
+            app:layout_constraintTop_toTopOf="@+id/tvName" />
 
         <TextView
             android:id="@+id/tvAlcoholic"
@@ -74,10 +74,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:contentDescription="@string/icon"
             android:src="@drawable/ic_category"
             app:layout_constraintStart_toStartOf="@+id/ivAlcoholic"
-            app:layout_constraintTop_toBottomOf="@+id/ivAlcoholic"
-            android:contentDescription="@string/icon"/>
+            app:layout_constraintTop_toBottomOf="@+id/ivAlcoholic" />
 
         <TextView
             android:id="@+id/tvCategory"
@@ -97,10 +97,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:contentDescription="@string/icon"
             android:src="@drawable/ic_glass"
             app:layout_constraintStart_toStartOf="@+id/ivCategory"
-            app:layout_constraintTop_toBottomOf="@+id/ivCategory"
-            android:contentDescription="@string/icon"/>
+            app:layout_constraintTop_toBottomOf="@+id/ivCategory" />
 
         <TextView
             android:id="@+id/tvGlassType"
@@ -155,12 +155,15 @@
             app:layout_constraintStart_toStartOf="@+id/ivGlass"
             app:layout_constraintTop_toBottomOf="@+id/ivGlass" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvIngredients"
+        <TextView
+            android:id="@+id/tvSpecificIngredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:text="@string/ingredients"
+            android:textColor="@color/black"
+            android:textSize="17sp"
             app:layout_constraintStart_toStartOf="@+id/tvIngredients"
             app:layout_constraintTop_toBottomOf="@+id/tvIngredients" />
 
@@ -174,20 +177,42 @@
             android:textSize="21sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tvIngredients"
-            app:layout_constraintTop_toBottomOf="@+id/rvIngredients" />
+            app:layout_constraintTop_toBottomOf="@+id/tvSpecificIngredients" />
 
         <TextView
             android:id="@+id/tvSpecificInstructions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="@string/instructions"
+            android:layout_marginBottom="20dp"
+            tools:text="@string/ingredients"
             android:textColor="@color/black"
             android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tvInstructions"
             app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="ivAlcoholic,ivCocktail,tvName,ivFav,tvAlcoholic,ivCategory,tvCategory,ivGlass,tvGlassType,tvSpecificCategory,tvSpecificGlassType,tvIngredients,tvSpecificIngredients,tvInstructions,tvSpecificInstructions" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 
