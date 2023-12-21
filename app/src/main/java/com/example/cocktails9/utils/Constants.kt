@@ -9,6 +9,7 @@ object Constants {
     const val EMAIL_KEY = "userEmail_"
     const val PASSWORD_KEY = "userPassword_"
     const val NAME_KEY = "userName_"
+    const val PHOTO_KEY = "userPhoto_"
 
     const val EMAIL_REGEX =
         "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
