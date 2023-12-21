@@ -11,6 +11,10 @@ class FavoritesRepository @Inject constructor(private val favoritesDao: Favorite
         return favoritesDao.getAllFavorites(userEmail)
     }
 
+    fun getIsFavorite(cocktailID: String, userEmail: String): LiveData<Boolean> {
+        return  favoritesDao.getIsFavorite(cocktailID, userEmail)
+    }
+
     suspend fun getAllFavoritesId(userEmail: String): List<String> {
         return favoritesDao.getAllFavoritesId(userEmail)
     }

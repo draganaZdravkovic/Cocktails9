@@ -8,10 +8,10 @@ import com.example.cocktails9.databinding.RecyclerViewCategoryItemBinding
 class RecyclerViewCategoryItemViewHolder(
     private val itemBinding: RecyclerViewCategoryItemBinding,
     private val resources: Resources
-    ) :
+) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
     fun bindItem(category: String?) {
-        itemBinding.tvCategory.text = resources.getString(R.string.cocktail_name, category)
+        itemBinding.tvCategory.text = resources.getString(R.string.text_with_end_space, category)
     }
 }

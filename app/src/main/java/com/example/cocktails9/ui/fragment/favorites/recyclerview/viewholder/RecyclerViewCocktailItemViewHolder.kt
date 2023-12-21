@@ -14,7 +14,8 @@ class RecyclerViewCocktailItemViewHolder(
     RecyclerView.ViewHolder(itemBinding.root) {
 
     fun bindItem(cocktails: Cocktails) {
-        itemBinding.tvCocktailName.text = resources.getString(R.string.cocktail_name, cocktails.name)
+        itemBinding.tvCocktailName.text =
+            resources.getString(R.string.text_with_end_space, cocktails.name)
         Glide.with(itemView).load(cocktails.image).into(itemBinding.imCocktail)
     }
 }
