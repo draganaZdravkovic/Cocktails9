@@ -127,7 +127,7 @@
         android:autofillHints="Password"
         android:enabled="false"
         android:hint="@string/password"
-        android:inputType="textVisiblePassword"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         android:text="@string/intern2023"
         app:layout_constraintBottom_toTopOf="@+id/btLogout"
