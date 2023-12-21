@@ -21,10 +21,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private val authenticationViewModel by viewModels<AuthenticationViewModel>()
 
-    private val emailRegex = Regex(Constants.EMAIL_REGEX)
-    private val passwordRegex = Regex(Constants.PASSWORD_REGEX)
-    private val nameRegex = Regex(Constants.NAME_REGEX)
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,14 +70,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
 
     private fun validationSuccessful(): Boolean {
-        if (!binding.etName.text.matches(nameRegex)) {
+        if (!authenticationViewModel.isNameValid(binding.etName.text.trim().toString())) {
             binding.etName.error = resources.getString(R.string.invalid_name)
             binding.etName.requestFocus()
             return false
         }
 
         val email = binding.etRegisterEmail.text.trim().toString()
-        if (!email.matches(emailRegex)) {
+        if (!authenticationViewModel.isEmailValid(email)) {
             binding.etRegisterEmail.error = resources.getString(R.string.invalid_email)
             binding.etRegisterEmail.requestFocus()
             return false
@@ -97,12 +93,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             return false
         }
 
-        if (!binding.etRegisterPassword.text.matches(passwordRegex)) {
+        if (!authenticationViewModel.isPasswordValid(
+                binding.etRegisterPassword.text.trim().toString()
+            )
+        ) {
             binding.etRegisterPassword.error = resources.getString(R.string.password_validation)
             binding.etRegisterPassword.requestFocus()
             return false
         }
-
         return true
     }
 
