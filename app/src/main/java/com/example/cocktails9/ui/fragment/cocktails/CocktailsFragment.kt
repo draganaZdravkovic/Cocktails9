@@ -29,7 +29,7 @@ class CocktailsFragment : Fragment(R.layout.fragment_cocktails) {
     private val cocktailsViewModel by viewModels<CocktailsViewModel>()
 
     private var isSearchVisible = false
-    private var query = ""
+    private var query = "s"
 
     private val args: CocktailsFragmentArgs by navArgs()
     private lateinit var filterBy: String
